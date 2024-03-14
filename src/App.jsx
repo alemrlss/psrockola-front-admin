@@ -16,6 +16,7 @@ import EditMemberships from "./views/Memberships/Edit/EditMemberships";
 import Country from "./views/Ubications/Country/Country";
 import State from "./views/Ubications/State/State";
 import City from "./views/Ubications/City/City";
+import Packages from "./views/Packages/Packages";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="/ubications/country" element={<Country />} />
             <Route path="/ubications/state" element={<State />} />
             <Route path="/ubications/city" element={<City />} />
+            <Route path="/packages" element={<Packages />} />
             <Route
               path="/users/*"
               element={<div>Page in users not found</div>}

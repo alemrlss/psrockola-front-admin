@@ -122,6 +122,11 @@ function Sidebar({ handleDrawerToggle }) {
         },
       ],
     },
+    {
+      id: "packages",
+      translationKey: "menut_packages",
+      icon: <MonetizationOnIcon />,
+    },
   ];
 
   return (
