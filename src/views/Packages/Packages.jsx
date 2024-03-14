@@ -107,7 +107,7 @@ function Packages() {
         <h2 className="text-2xl font-semibold mb-4">Packages Disponibles</h2>
         <ul>
           {packages.map((pkg, index) => (
-            <li key={index} className="mb-2">Nombre: {pkg.name} - Monto(RB):{pkg.rockobitsAmount} - Precio:{pkg.price}</li>
+            <li key={index} className="mb-2">Nombre: {pkg.name} - Monto(RB):{pkg.rockobitsAmount} - Precio:{pkg.price/100} usd</li>
           ))}
         </ul>
       </div>
