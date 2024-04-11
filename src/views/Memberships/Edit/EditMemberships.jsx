@@ -45,13 +45,10 @@ function EditMemberships() {
     fetchCountries();
   }, []);
 
-  const handleCountryChange = (event) => {
+  const handleCountryChange = async (event) => {
     setSelectedCountry(event.target.value);
-  };
-
-  const handleFilterClick = async () => {
     try {
-      const response = await api.get(`/membership/${selectedCountry}`);
+      const response = await api.get(`/membership/${event.target.value}`);
       setMemberships(response.data);
     } catch (error) {
       console.error("Error fetching memberships:", error);
@@ -88,7 +85,7 @@ function EditMemberships() {
           style={{ minWidth: "200px" }}
         >
           <MenuItem value="" disabled>
-            Selecciona un país
+            Select a country
           </MenuItem>
           {countries.map((country) => (
             <MenuItem key={country.id} value={country.id}>
@@ -97,43 +94,39 @@ function EditMemberships() {
           ))}
         </Select>
       </FormControl>
-      <Button variant="contained" onClick={handleFilterClick}>
-        Filtrar
-      </Button>
 
       {/* Muestra las membresías */}
       <div className="flex">
         {memberships.map((membership) => (
           <div key={membership.id} className="border border-black p-2 m-2" style={{ marginTop: "20px" }}>
             <p>ID: {membership.id}</p>
-            <p>Nombre: {membership.name}</p>
+            <p>Name: {membership.name}</p>
             <p>
-              Precio: {membership.amount} {membership.currency}
+              Price: {membership.amount} {membership.currency}
             </p>
             <p>
-              Tipo: <b>{getBenefits(membership).type}</b>
+              Type: <b>{getBenefits(membership).type}</b>
             </p>
             <Button
               variant="contained"
               onClick={() => handleEditClick(membership)}
             >
-              Editar esta membresía
+              Edit this membership
             </Button>
           </div>
         ))}
       </div>
       {memberships.length === 0 && (
-        <p className="text-2xl">No hay membresías disponibles</p>
+        <p className="text-2xl">No memberships available</p>
       )}
 
       <Dialog open={isModalOpen} onClose={handleCloseModal}>
-        <DialogTitle>Editar membresía</DialogTitle>
+        <DialogTitle>Edit Membership</DialogTitle>
         <DialogContent>
-          {console.log(selectedMembership)}
           {selectedMembership && (
             <>
               <TextField
-                label="Nombre"
+                label="Name"
                 value={selectedMembership.name}
                 onChange={(e) =>
                   setSelectedMembership({
@@ -144,7 +137,7 @@ function EditMemberships() {
                 fullWidth
               />
               <TextField
-                label="Precio"
+                label="Price"
                 value={selectedMembership.amount}
                 onChange={(e) =>
                   setSelectedMembership({
@@ -154,19 +147,12 @@ function EditMemberships() {
                 }
                 fullWidth
               />
-              {/* Agrega más campos según tus necesidades */}
             </>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsModalOpen(false)}>Cancelar</Button>
-          <Button
-            onClick={() => {
-              handleSaveChanges();
-            }}
-          >
-            Guardar cambios
-          </Button>
+          <Button onClick={handleCloseModal}>Cancel</Button>
+          <Button onClick={handleSaveChanges}>Save Changes</Button>
         </DialogActions>
       </Dialog>
     </div>

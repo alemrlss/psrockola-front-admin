@@ -13,15 +13,17 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [cardsInfo, setCardsInfo] = useState();
+  const [graphicsInfo, setGraphicsInfo] = useState();
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("/dashboard");
-        const data = response.data;
+        const info = response.data.data;
 
-        setCardsInfo(data.data);
+        setCardsInfo(info.cardsInfo);
+        setGraphicsInfo(info.graphicsInfo);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener datos del backend:", error);
@@ -50,7 +52,7 @@ const Dashboard = () => {
             {t("dashboard_welcome")} Andy Scott!
           </h2>
           <Cards data={cardsInfo} />
-          <Graphics />
+          <Graphics data={graphicsInfo} />
           <LastOrders />
         </>
       )}

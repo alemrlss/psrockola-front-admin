@@ -48,7 +48,7 @@ function Memberships() {
 
     if (name === "countryId") {
       const selectedCountry = countries.find((country) => country.id === value);
-      const formattedName = `${selectedCountry.isoCode} - `;
+      const formattedName = `${selectedCountry.name}`;
       setFormData({ ...formData, [name]: value, name: formattedName });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -226,9 +226,7 @@ function Memberships() {
                 <EmojiEventsIcon fontSize="large" sx={{ color: "yellow" }} />{" "}
               </div>
               <p className="text-center text-sm my-2 font-mono">
-                {formData.name
-                  ? formData.name
-                  : "PAIS - Nombre de la Membresia"}
+                {formData.name ? formData.name : " Nombre de la Membresia"}
               </p>
               <Typography variant="h2">
                 {formData.currency === "usd" ? "$" : "$"}

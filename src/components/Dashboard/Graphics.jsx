@@ -14,12 +14,12 @@ import {
 Chart.register(ArcElement, Tooltip, Legend);
 Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-function Graphics() {
+function Graphics({ data }) {
   const chartDataSet = {
-    labels: ["Platino ", "VIP", "Normal"],
+    labels: ["Basico ", "Plus", "Premium"],
     datasets: [
       {
-        data: [40, 40, 20],
+        data: [data.basicMembers, data.plusMembers, data.premiumMembers],
         backgroundColor: ["#C58FC1", "#9772BA", "#555CB3"],
         hoverBackgroundColor: ["#C58FC1", "#9772BA", "#555CB3"],
       },

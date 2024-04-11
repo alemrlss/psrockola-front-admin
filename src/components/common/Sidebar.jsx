@@ -93,11 +93,6 @@ function Sidebar({ handleDrawerToggle }) {
           translationKey: "menu_membership_edit",
           icon: <PersonIcon />,
         },
-        {
-          id: "delete",
-          translationKey: "menu_membership_",
-          icon: <PersonIcon />,
-        },
       ],
     },
     {
