@@ -16,7 +16,7 @@ function Cards({ data }) {
   const cards = [
     { title: "Sales", amount: data.sales || 0, icon: <AttachMoneyIcon /> },
     { title: "Clients", amount: data.clients || 0, icon: <PersonIcon /> },
-    { title: "Companies", amount: data.clients || 0, icon: <BusinessIcon /> },
+    { title: "Companies", amount: data.companies || 0, icon: <BusinessIcon /> },
     { title: "Videos", amount: data.videos || 0, icon: <VideoLibraryIcon /> },
   ];
   return (
