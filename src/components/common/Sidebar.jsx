@@ -14,14 +14,13 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SidebarItemLogout from "./SidebarItemLogout";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-
-import { useAuth } from "../../auth/AuthProvider";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/authSlice";
 
 function Sidebar({ handleDrawerToggle }) {
   const { t } = useTranslation();
-
-  const auth = useAuth();
+  const dispatch = useDispatch();
 
   const [activeItem, setActiveItem] = useState("dashboard");
   const handleItemClick = (itemId) => {
@@ -31,7 +30,7 @@ function Sidebar({ handleDrawerToggle }) {
   };
 
   const handleLogout = () => {
-    auth.logout();
+    dispatch(logout());
   };
   const menuItems = [
     {

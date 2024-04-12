@@ -1,8 +1,11 @@
 import { Box, Modal, Tab, Tabs, IconButton } from "@mui/material";
 import { useState } from "react";
+import UpdateUser from "./Settings/UpdateUser";
+import ChangePassword from "./Settings/ChangePassword";
 import CloseIcon from "@mui/icons-material/Close";
+import UpdatePhoto from "./Settings/UpdatePhoto";
 
-function ModalEditUser({ openModal, handleCloseModal }) {
+function ModalEditUser({ openModal, handleCloseModal, user }) {
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -62,10 +65,10 @@ function ModalEditUser({ openModal, handleCloseModal }) {
             >
               <Tab label="Update user" />
               {<Tab label="Change password" />}
-              <Tab label="Update profile photo" variant="contained" />
             </Tabs>
 
-          
+            {tabValue === 0 && <UpdateUser user={user} />}
+            {tabValue === 1 && <ChangePassword user={user} />}
           </Box>
         </Box>
       </Box>

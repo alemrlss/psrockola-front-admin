@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../auth/AuthProvider";
 import { useTranslation } from "react-i18next";
 import Cards from "../../components/Dashboard/Cards";
 import Graphics from "../../components/Dashboard/Graphics";
 import LastOrders from "../../components/Dashboard/LastOrders";
 import api from "../../api/api";
 import Loader from "../../components/Loaders/Loader";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
+  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
+
 
   const [loading, setLoading] = useState(true);
   const [cardsInfo, setCardsInfo] = useState();
@@ -37,7 +39,6 @@ const Dashboard = () => {
     };
 
     fetchData();
-    auth.checkTokenExpiration();
   }, [auth]);
 
   return (
@@ -51,7 +52,7 @@ const Dashboard = () => {
       ) : (
         <>
           <h2 className="font-bold text-[#555CB3]">
-            {t("dashboard_welcome")} Andy Scott!
+            {t("dashboard_welcome")} {user.name}!
           </h2>
           <Cards data={cardsInfo} />
           <Graphics data={graphicsInfo} />

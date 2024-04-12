@@ -2,7 +2,6 @@
 import LanguageSwitcher from "../LanguageSwitcher";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,8 +9,11 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import ModalEditUser from "./ModalEditUser";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function AppBarComponent({ drawerWidth, handleDrawerToggle }) {
+  const user = useSelector((state) => state.auth.user);
+
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -73,15 +75,29 @@ function AppBarComponent({ drawerWidth, handleDrawerToggle }) {
             {/* Selector de idioma */}
             <LanguageSwitcher />
             {/* Nombre y rol */}
-            <Box sx={{ mr: 1, ml: 1, textAlign: "right" }}>
+            <Box
+              sx={{
+                mr: 1,
+                textAlign: "right",
+                cursor: "pointer",
+              }}
+            >
               <Typography
                 variant="caption"
                 component="div"
                 sx={{ color: "black" }}
               >
-                Andy Scott
+                {user.name}
               </Typography>
-              <Typography variant="body2" component="div" color="textSecondary">
+              <Typography
+                variant="body2"
+                component="div"
+                color="textSecondary"
+                sx={{
+                  fontStyle: "italic",
+                  fontSize: "10px",
+                }}
+              >
                 Admin
               </Typography>
             </Box>
@@ -99,7 +115,7 @@ function AppBarComponent({ drawerWidth, handleDrawerToggle }) {
       <ModalEditUser
         openModal={openModal}
         handleCloseModal={handleCloseModal}
-        //user={user}
+        user={user}
       />
     </AppBar>
   );

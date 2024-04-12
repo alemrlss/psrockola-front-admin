@@ -2,17 +2,19 @@ import { useState, useRef } from "react";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import api from "../../api/api";
 import ReCaptcha from "react-google-recaptcha";
-import { useAuth } from "../../auth/AuthProvider";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Image from "/logo.png";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAdmin } from "../../features/authSlice";
+import { Typography } from "@mui/material";
 
 function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    adminCode: "", // Nuevo campo para el código
+    adminCode: "",
   });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -21,25 +23,25 @@ function Login() {
   const [codeSendend, setcodeSendend] = useState(false);
   const [codeSendendText, setcodeSendendText] = useState("");
 
-  const auth = useAuth();
   const goTo = useNavigate();
 
-  if (auth.isAuthenticated) {
-    return <Navigate to="/dashboard" />;
-  }
-
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const handleInputChange = (e) => {
     setError("");
+    dispatch({ type: "auth/clearError" }); // Limpiar el error al cambiar el formulario
+
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch({ type: "auth/clearError" }); // Limpiar el error al cambiar el formulario
 
     if (!captcha.current.getValue()) {
       setError("* - Please, check the captcha");
@@ -63,11 +65,17 @@ function Login() {
     }
 
     try {
-      const response = await api.post("/auth/login/admins", formData);
-      if (response.data.token) {
-        auth.saveUser(response.data);
-        goTo("/dashboard");
-      }
+      dispatch(loginAdmin(formData))
+        .then((result) => {
+          if (result.payload && result.payload.token) {
+            goTo("/dashboard");
+          }
+        })
+        .catch((error) => {
+          // Manejar errores de inicio de sesión
+          console.log(error);
+          console.log("test");
+        });
     } catch (error) {
       console.log(error);
       if (typeof error.response.data.message === "string") {
@@ -278,6 +286,14 @@ function Login() {
                 Enviar Código
               </Button>
             </div>
+            {auth.status === "failed" && (
+              <Typography
+                variant="body2"
+                sx={{ marginTop: "12px", fontWeight: "bold", color: "red" }}
+              >
+                {auth.error}
+              </Typography>
+            )}
           </form>
         </div>
         <div className="w-8/12 h-24 flex justify-center">
