@@ -6,39 +6,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import { useTranslation } from "react-i18next";
-function LastOrders() {
+import { formatDate } from "../../utils/formatDate";
+function LastOrders({ data }) {
   const { t } = useTranslation();
 
-  const tableData = [
-    {
-      order: "PSR1012",
-      client: "Planet Burger",
-      amount: "200",
-      status: "PENDIENTE",
-      date: "19/12/2023",
-    },
-    {
-      order: "PSR1011",
-      client: "Chilli's",
-      amount: "300",
-      status: "COMPLETADO",
-      date: "19/12/2023",
-    },
-    {
-      order: "PSR1010",
-      client: "Dominos Pizza",
-      amount: "600",
-      status: "RECHAZADO",
-      date: "19/12/2023",
-    },
-    {
-      order: "PSR1009",
-      client: "Rosso Bar",
-      amount: "300",
-      status: "COMPLETADO",
-      date: "19/12/2023",
-    },
-  ];
+  console.log(data);
+
   return (
     <>
       <h2 className="text-xl font-bold mt-3 mb-2">
@@ -53,9 +26,6 @@ function LastOrders() {
             <TableHead>
               <TableRow sx={{ backgroundColor: "#EFF0F2" }}>
                 <TableCell sx={{ textAlign: "center" }}>
-                  {t("dashboard_table_order").toUpperCase()}
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
                   {" "}
                   {t("dashboard_table_client").toUpperCase()}
                 </TableCell>
@@ -65,43 +35,36 @@ function LastOrders() {
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {" "}
-                  {t("dashboard_table_state").toUpperCase()}
+                  {t("dashboard_table_description").toUpperCase()}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {" "}
-                  {t("dashboard_table_date").toUpperCase()}
+                  {t("dashboard_table_createdAt").toUpperCase()}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {" "}
+                  {t("dashboard_table_type").toUpperCase()}
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.map((row) => (
-                <TableRow key={row.order}>
+              {data.map((row) => (
+                <TableRow key={row.id}>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {row.order}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {row.client}
+                    {row.user.name}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {row.amount}
+                    {row.amountInCents / 100}$
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      textAlign: "center",
-                      color:
-                        row.status === "PENDIENTE"
-                          ? "#FFC700"
-                          : row.status === "COMPLETADO"
-                          ? "#00BF63"
-                          : row.status === "RECHAZADO"
-                          ? "#CB001C"
-                          : "inherit",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {row.status}
+                  <TableCell>{row.description}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {formatDate(row.createdAt)}
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{row.date}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {row.type === 3 && "Rockobits"}
+                    {row.type === 12 && "Membresía"}
+                    {row.type === 13 && "Pantalla"}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

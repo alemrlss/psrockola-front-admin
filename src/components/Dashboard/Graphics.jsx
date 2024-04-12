@@ -16,7 +16,7 @@ Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 function Graphics({ data }) {
   const chartDataSet = {
-    labels: ["Basico ", "Plus", "Premium"],
+    labels: ["Basico", "Plus", "Premium"],
     datasets: [
       {
         data: [data.basicMembers, data.plusMembers, data.premiumMembers],
@@ -25,33 +25,39 @@ function Graphics({ data }) {
       },
     ],
   };
+  const months = data.transactionsByMonth.map((item) => item.month);
+  const totalAmounts = data.transactionsByMonth.map(
+    (item) => item.totalamount / 100
+  );
 
+  console.log(totalAmounts);
+  console.log(months);
   const barData = {
-    labels: [
-      "Opcion #1",
-      "Opcion #2",
-      "Opcion #3",
-      "Opcion #4",
-      "Opcion #1",
-      "Opcion #2",
-      "Opcion #3",
-      "Opcion #4",
-    ],
+    labels: months,
+
     datasets: [
       {
-        label: "Pruebas",
-        data: [98, 59, 20, 5, 80, 52, 12, 15],
+        label: "Ventas Rockobits",
+        data: totalAmounts,
         backgroundColor: [
           "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
+          "rgba(173, 136, 241, 0.8)",
         ],
         borderColor: [
+          "rgba(173, 136, 241, 1)",
+          "rgba(173, 136, 241, 1)",
+          "rgba(173, 136, 241, 1)",
+          "rgba(173, 136, 241, 1)",
           "rgba(173, 136, 241, 1)",
           "rgba(173, 136, 241, 1)",
           "rgba(173, 136, 241, 1)",
@@ -65,6 +71,7 @@ function Graphics({ data }) {
       },
     ],
   };
+
   return (
     <Grid container spacing={2} sx={{ marginTop: "4px" }}>
       <Grid item xs={12} md={9}>

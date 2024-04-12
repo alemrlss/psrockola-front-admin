@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cardsInfo, setCardsInfo] = useState();
   const [graphicsInfo, setGraphicsInfo] = useState();
+  const [recentTransactions, setRecentTransactions] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Dashboard = () => {
 
         setCardsInfo(info.cardsInfo);
         setGraphicsInfo(info.graphicsInfo);
+        setRecentTransactions(info.recentTransactions);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener datos del backend:", error);
@@ -53,7 +55,7 @@ const Dashboard = () => {
           </h2>
           <Cards data={cardsInfo} />
           <Graphics data={graphicsInfo} />
-          <LastOrders />
+          <LastOrders data={recentTransactions} />
         </>
       )}
     </section>

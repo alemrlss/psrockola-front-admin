@@ -2,18 +2,25 @@
 import LanguageSwitcher from "../LanguageSwitcher";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import InputAdornment from "@mui/material/InputAdornment";
-import MicIcon from "@mui/icons-material/Mic";
+
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import ModalEditUser from "./ModalEditUser";
+import { useState } from "react";
 
 function AppBarComponent({ drawerWidth, handleDrawerToggle }) {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   return (
     <AppBar
       position="fixed"
@@ -83,11 +90,17 @@ function AppBarComponent({ drawerWidth, handleDrawerToggle }) {
             <Avatar
               alt="Andy Avatar"
               src="/path/to/avatar.jpg"
-              sx={{ width: 32, height: 32 }}
+              sx={{ width: 32, height: 32, cursor: "pointer" }}
+              onClick={handleOpenModal}
             />
           </Box>
         </Box>
       </Toolbar>
+      <ModalEditUser
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+        //user={user}
+      />
     </AppBar>
   );
 }
