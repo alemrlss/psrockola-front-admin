@@ -17,6 +17,8 @@ import Country from "./views/Ubications/Country/Country";
 import State from "./views/Ubications/State/State";
 import City from "./views/Ubications/City/City";
 import Packages from "./views/Packages/Packages";
+import Transactions from "./views/Transactions/Transactions";
+import ListPackages from "./views/Packages/List/ListPackages";
 
 function App() {
   return (
@@ -35,6 +37,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/graphics" element={<Graphics />} />
+            <Route path="/transactions" element={<Transactions />} />
             <Route path="/memberships/create" element={<Memberships />} />
             <Route path="/memberships/edit" element={<EditMemberships />} />
             <Route path="/users/clients" element={<Clients />} />
@@ -44,7 +47,8 @@ function App() {
             <Route path="/ubications/country" element={<Country />} />
             <Route path="/ubications/state" element={<State />} />
             <Route path="/ubications/city" element={<City />} />
-            <Route path="/packages" element={<Packages />} />
+            <Route path="/packages/create-package" element={<Packages />} />
+            <Route path="/packages/list" element={<ListPackages />} />
             <Route
               path="/users/*"
               element={<div>Page in users not found</div>}

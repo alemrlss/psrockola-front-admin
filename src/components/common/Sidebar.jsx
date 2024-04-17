@@ -15,12 +15,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SidebarItemLogout from "./SidebarItemLogout";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { logout } from "../../features/authSlice";
 
 function Sidebar({ handleDrawerToggle }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [activeItem, setActiveItem] = useState("dashboard");
   const handleItemClick = (itemId) => {
@@ -29,9 +26,6 @@ function Sidebar({ handleDrawerToggle }) {
     handleDrawerToggle();
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
   const menuItems = [
     {
       id: "dashboard",
@@ -120,6 +114,18 @@ function Sidebar({ handleDrawerToggle }) {
       id: "packages",
       translationKey: "menut_packages",
       icon: <MonetizationOnIcon />,
+      subItems: [
+        {
+          id: "create-package",
+          translationKey: "menu_package_create",
+          icon: <BusinessIcon />,
+        },
+        {
+          id: "list",
+          translationKey: "menu_package_list",
+          icon: <PersonIcon />,
+        },
+      ],
     },
   ];
 
@@ -167,7 +173,6 @@ function Sidebar({ handleDrawerToggle }) {
             subItems: null,
           }}
           t={t}
-          handleLogout={handleLogout}
         />
       </div>
     </div>
