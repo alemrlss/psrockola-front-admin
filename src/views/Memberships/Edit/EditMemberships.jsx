@@ -65,7 +65,7 @@ function EditMemberships() {
         newAmount: selectedMembership.amount,
         currency: selectedMembership.currency,
         priceId: selectedMembership.price,
-        mebershipId: selectedMembership.id,
+        membershipId: selectedMembership.id,
       };
       const response = await api.patch(`/membership/update`, data);
       console.log(response);
@@ -109,7 +109,7 @@ function EditMemberships() {
         ))}
       </Grid>
       {memberships.length === 0 && (
-        <p className="text-4xl my-10 text-[#555CB3] font-bold">No memberships available</p>
+        <p className="text-4xl my-10 text-[#555CB3] font">No memberships available</p>
       )}
 
       <Dialog open={isModalOpen} onClose={handleCloseModal} sx={{ my: 4 }}>
