@@ -16,23 +16,36 @@ import {
 import api from "../../../api/api";
 import getBenefits from "../../../utils/getBenefits";
 import MembershipCard from "../../../components/Membership/MembershipCard";
+import ModalEditMembership from "../../../components/Membership/ModalEditMembership";
+import ModalDeleteMembership from "../../../components/Membership/ModalDeleteMembership";
 
 function EditMemberships() {
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [memberships, setMemberships] = useState([]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
   const [selectedMembership, setSelectedMembership] = useState(null);
 
   const handleEditClick = (membership) => {
     setSelectedMembership(membership);
-    setIsModalOpen(true);
+    setIsModalOpenEdit(true);
   };
 
-  const handleCloseModal = () => {
+  const handleDeleteClick = (membership) => {
+    setSelectedMembership(membership);
+    setIsModalOpenDelete(true);
+  };
+
+  const handleCloseModalEdit = () => {
     setSelectedMembership(null);
-    setIsModalOpen(false);
+    setIsModalOpenEdit(false);
+  };
+
+  const handleCloseModalDelete = () => {
+    setSelectedMembership(null);
+    setIsModalOpenDelete(false);
   };
 
   useEffect(() => {
@@ -68,10 +81,28 @@ function EditMemberships() {
         membershipId: selectedMembership.id,
       };
       const response = await api.patch(`/membership/update`, data);
-      console.log(response);
-      console.log(data);
+
+      const updatedMembership = response.data.data;
+      const updatedMemberships = memberships.map((membership) =>
+        membership.id === updatedMembership.id ? updatedMembership : membership
+      );
+      setMemberships(updatedMemberships);
+      handleCloseModalEdit();
     } catch (error) {
       console.error("Error updating membership:", error);
+    }
+  };
+
+  const handleDeleteMembership = async () => {
+    try {
+      await api.patch(`/membership/delete/${selectedMembership.id}`);
+      const updatedMemberships = memberships.filter(
+        (membership) => membership.id !== selectedMembership.id
+      );
+      setMemberships(updatedMemberships);
+      handleCloseModalDelete();
+    } catch (error) {
+      console.error("Error deleting membership:", error);
     }
   };
 
@@ -105,62 +136,30 @@ function EditMemberships() {
             key={membership.id}
             membership={membership}
             onEditClick={handleEditClick}
+            onDeleteClick={handleDeleteClick}
           />
         ))}
       </Grid>
       {memberships.length === 0 && (
-        <p className="text-4xl my-10 text-[#555CB3] font">No memberships available</p>
+        <p className="text-4xl my-10 text-[#555CB3] font">
+          No memberships available
+        </p>
       )}
 
-      <Dialog open={isModalOpen} onClose={handleCloseModal} sx={{ my: 4 }}>
-        <Box>
-          <DialogTitle>Edit Membership</DialogTitle>
-        </Box>
-        <DialogContent>
-          {selectedMembership && (
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  label="Name"
-                  value={selectedMembership.name}
-                  onChange={(e) =>
-                    setSelectedMembership({
-                      ...selectedMembership,
-                      name: e.target.value,
-                    })
-                  }
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Price"
-                  value={selectedMembership.amount}
-                  onChange={(e) =>
-                    setSelectedMembership({
-                      ...selectedMembership,
-                      amount: e.target.value,
-                    })
-                  }
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSaveChanges}
-            color="primary"
-            variant="contained"
-          >
-            Save Changes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ModalEditMembership
+        isModalOpen={isModalOpenEdit}
+        handleCloseModal={handleCloseModalEdit}
+        selectedMembership={selectedMembership}
+        setSelectedMembership={setSelectedMembership}
+        handleSaveChanges={handleSaveChanges}
+      />
+      <ModalDeleteMembership
+        isModalOpen={isModalOpenDelete}
+        handleCloseModal={handleCloseModalDelete}
+        selectedMembership={selectedMembership}
+        setSelectedMembership={setSelectedMembership}
+        handleDeleteMembership={handleDeleteMembership}
+      />
     </div>
   );
 }

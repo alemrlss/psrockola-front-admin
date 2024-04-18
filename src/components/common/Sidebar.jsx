@@ -86,6 +86,11 @@ function Sidebar({ handleDrawerToggle }) {
           translationKey: "menu_membership_edit",
           icon: <PersonIcon />,
         },
+        {
+          id: "eliminated",
+          translationKey: "menu_membership_eliminated",
+          icon: <PersonIcon />,
+        },
       ],
     },
     {

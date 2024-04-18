@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button, Typography, Box } from "@mui/material";
 import getBenefits from "../../utils/getBenefits";
 
-function MembershipCard({ membership, onEditClick }) {
+function MembershipCard({ membership, onEditClick, onDeleteClick }) {
   return (
     <Grid item xs={3}>
       <Box
@@ -30,6 +30,13 @@ function MembershipCard({ membership, onEditClick }) {
           onClick={() => onEditClick(membership)}
         >
           Edit
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onDeleteClick(membership)}
+        >
+          Delete
         </Button>
       </Box>
     </Grid>
