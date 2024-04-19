@@ -25,20 +25,16 @@ function Graphics({ data }) {
       },
     ],
   };
-  const months = data.transactionsByMonth.map((item) => item.month);
-  const totalAmounts = data.transactionsByMonth.map(
-    (item) => item.totalamount / 100
-  );
+ 
 
-  console.log(totalAmounts);
-  console.log(months);
+
   const barData = {
-    labels: months,
+    labels: ["Prueba"],
 
     datasets: [
       {
         label: "Ventas Rockobits",
-        data: totalAmounts,
+        data: [1],
         backgroundColor: [
           "rgba(173, 136, 241, 0.8)",
           "rgba(173, 136, 241, 0.8)",

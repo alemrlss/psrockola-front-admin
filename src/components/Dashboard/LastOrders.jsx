@@ -12,6 +12,45 @@ function LastOrders({ data }) {
 
   console.log(data);
 
+  const getTypeString = (type) => {
+    if (type === 10) {
+      return "BASIC";
+    }
+    if (type === 20) {
+      return "PLUS";
+    }
+    if (type === 30) {
+      return "PREMIUM";
+    }
+
+    return "Unknown";
+  };
+  const renderTypeTransaction = (transaction) => {
+    if (transaction.type === "membership") {
+      return (
+        <TableCell sx={{ textAlign: "center" }}>
+          {t("transaction_pay_type_membership")}{" "}
+          {getTypeString(transaction.membership.type)}
+        </TableCell>
+      );
+    }
+
+    if (transaction.type === "screen") {
+      return (
+        <TableCell sx={{ textAlign: "center" }}>
+          {t("transaction_pay_type_screen")} Screen {transaction.screen.code}
+        </TableCell>
+      );
+    }
+
+    if (transaction.type === "rockobits") {
+      return (
+        <TableCell sx={{ textAlign: "center" }}>
+          {t("transaction_pay_type_rockobits")} {transaction.rockobits} Rockobits
+        </TableCell>
+      );
+    }
+  };
   return (
     <>
       <h2 className="text-xl font-bold mt-3 mb-2">
@@ -27,7 +66,11 @@ function LastOrders({ data }) {
               <TableRow sx={{ backgroundColor: "#EFF0F2" }}>
                 <TableCell sx={{ textAlign: "center" }}>
                   {" "}
-                  {t("dashboard_table_client").toUpperCase()}
+                  {t("dashboard_table_createdAt").toUpperCase()}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {" "}
+                  {t("dashboard_table_type").toUpperCase()}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {" "}
@@ -35,15 +78,7 @@ function LastOrders({ data }) {
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {" "}
-                  {t("dashboard_table_description").toUpperCase()}
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  {" "}
-                  {t("dashboard_table_createdAt").toUpperCase()}
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  {" "}
-                  {t("dashboard_table_type").toUpperCase()}
+                  {t("dashboard_table_client").toUpperCase()}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -51,19 +86,14 @@ function LastOrders({ data }) {
               {data.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {row.user.name}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {row.amountInCents / 100}$
-                  </TableCell>
-                  <TableCell>{row.description}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
                     {formatDate(row.createdAt)}
                   </TableCell>
+                  {renderTypeTransaction(row)}
                   <TableCell sx={{ textAlign: "center" }}>
-                    {row.type === 3 && "Rockobits"}
-                    {row.type === 12 && "Membresía"}
-                    {row.type === 13 && "Pantalla"}
+                    {row.amount/100}$
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {row.company.name}
                   </TableCell>
                 </TableRow>
               ))}
