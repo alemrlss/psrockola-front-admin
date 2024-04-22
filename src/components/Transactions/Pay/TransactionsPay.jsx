@@ -11,10 +11,18 @@ import {
   Box,
   CircularProgress,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  Checkbox,
+  Grid,
 } from "@mui/material";
 import api from "../../../api/api";
 import { formatDate } from "../../../utils/formatDate";
 import { useTranslation } from "react-i18next";
+import ModalTransactions from "../ModalTransactions";
 
 function TransactionsPay() {
   const { t } = useTranslation();
@@ -25,9 +33,30 @@ function TransactionsPay() {
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const [isMembershipChecked, setIsMembershipChecked] = useState(true);
+  const [isScreenChecked, setIsScreenChecked] = useState(true);
+  const [isRockobitsChecked, setIsRockobitsChecked] = useState(true);
+
   useEffect(() => {
     fetchTransactions();
-  }, [page, take]);
+  }, [
+    page,
+    take,
+    selectedCountry,
+    isMembershipChecked,
+    isScreenChecked,
+    isRockobitsChecked,
+  ]);
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
 
   const fetchTransactions = async () => {
     setIsLoading(true);
@@ -36,14 +65,26 @@ function TransactionsPay() {
         params: {
           skip: page * take,
           take,
+          country: selectedCountry,
+          membership: isMembershipChecked ? "true" : "false",
+          screen: isScreenChecked ? "true" : "false",
+          rockobits: isRockobitsChecked ? "true" : "false",
         },
       });
       setTransactions(response.data.data.transactions);
       setTotalCount(response.data.data.total);
     } catch (error) {
-      console.error("Error fetching Rockobits transactions:", error);
+      console.error("Error fetching Pay transactions:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+  const fetchCountries = async () => {
+    try {
+      const response = await api.get("/country/selects");
+      setCountries(response.data.data);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
     }
   };
 
@@ -53,6 +94,37 @@ function TransactionsPay() {
 
   const handleChangeRowsPerPage = (event) => {
     setTake(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleOpenModal = (company) => {
+    setSelectedCompany(company);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCompany(null);
+  };
+
+  const handleCountryChange = (event) => {
+    setSelectedCountry(event.target.value);
+    setPage(0); // Restablecer la página a 0 al cambiar de país
+  };
+
+  // Manejadores para cambiar los valores de los checkboxes
+  const handleMembershipChange = (event) => {
+    setIsMembershipChecked(event.target.checked);
+    setPage(0); // Restablecer la página a 0 al cambiar de filtro
+  };
+
+  const handleScreenChange = (event) => {
+    setIsScreenChecked(event.target.checked);
+    setPage(0);
+  };
+
+  const handleRockobitsChange = (event) => {
+    setIsRockobitsChecked(event.target.checked);
     setPage(0);
   };
 
@@ -72,6 +144,14 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
+            {t("transaction_pay_type_rockobits")} {transaction.rockobits}{" "}
+            Rockobits
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
             {transaction.amount / 100}$
           </TableCell>
           <TableCell
@@ -79,16 +159,16 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-            {transaction.company.name}
-          </TableCell>
-
-          <TableCell
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            {t("transaction_pay_type_rockobits")} {transaction.rockobits}{" "}
-            Rockobits
+            <Typography
+              onClick={() => handleOpenModal(transaction.company)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.company.name}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -108,6 +188,14 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
+            {t("transaction_pay_type_membership")}{" "}
+            {getTypeString(transaction.membership.type)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
             {transaction.amount / 100}$
           </TableCell>
           <TableCell
@@ -115,16 +203,16 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-            {transaction.company.name}
-          </TableCell>
-
-          <TableCell
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            {t("transaction_pay_type_membership")}{" "}
-            {getTypeString(transaction.membership.type)}
+            <Typography
+              onClick={() => handleOpenModal(transaction.company)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.company.name}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -144,6 +232,13 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
+            {t("transaction_pay_type_screen")} {transaction.screen.code}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
             {transaction.amount / 100}$
           </TableCell>
           <TableCell
@@ -151,15 +246,16 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-            {transaction.company.name}
-          </TableCell>
-
-          <TableCell
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            {t("transaction_pay_type_screen")} {transaction.screen.code}
+            <Typography
+              onClick={() => handleOpenModal(transaction.company)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.company.name}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -182,6 +278,117 @@ function TransactionsPay() {
 
   return (
     <div className="mt-4">
+      <Grid container spacing={2} sx={{ mb: 2 }}>
+        {/* Filtro por país */}
+        <Grid item xs={12} sm={4} md={4}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="country-select-label">
+              {t("select_country")}
+            </InputLabel>
+            <Select
+              labelId="country-select-label"
+              id="country-select"
+              value={selectedCountry}
+              onChange={handleCountryChange}
+              label={t("select_country")}
+            >
+              <MenuItem value="">{t("all_countries")}</MenuItem>
+              {countries.map((country) => (
+                <MenuItem key={country.isoCode} value={country.isoCode}>
+                  {country.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        {/* Filtro por tipo de transacción */}
+        <Grid item xs={12} sm={8} md={8}>
+          <Grid container spacing={2}>
+            {/* Checkbox de Membership */}
+            <Grid item xs={4} sm={4} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isMembershipChecked}
+                    onChange={handleMembershipChange}
+                    sx={{
+                      color: "blue",
+                      "&.Mui-checked": {
+                        color: "blue",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 24, // Ajusta el tamaño del icono del checkbox
+                      },
+                    }}
+                  />
+                }
+                label={t("transaction_filter_membership")}
+                sx={{
+                  width: "100%",
+                  justifyContent: "center", // Centra el checkbox y el label
+                  marginBottom: 0,
+                }}
+              />
+            </Grid>
+
+            {/* Checkbox de Screen */}
+            <Grid item xs={4} sm={4} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isScreenChecked}
+                    onChange={handleScreenChange}
+                    sx={{
+                      color: "green",
+                      "&.Mui-checked": {
+                        color: "green",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 24, // Ajusta el tamaño del icono del checkbox
+                      },
+                    }}
+                  />
+                }
+                label={t("transaction_filter_screen")}
+                sx={{
+                  width: "100%",
+                  justifyContent: "center", // Centra el checkbox y el label
+                  marginBottom: 0,
+                }}
+              />
+            </Grid>
+
+            {/* Checkbox de Rockobits */}
+            <Grid item xs={4} sm={4} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isRockobitsChecked}
+                    onChange={handleRockobitsChange}
+                    sx={{
+                      color: "red",
+                      "&.Mui-checked": {
+                        color: "red",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 24, // Ajusta el tamaño del icono del checkbox
+                      },
+                    }}
+                  />
+                }
+                label={t("transaction_filter_rockobits")}
+                sx={{
+                  width: "100%",
+                  justifyContent: "center", // Centra el checkbox y el label
+                  marginBottom: 0,
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+
       {isLoading ? (
         <Box
           sx={{
@@ -223,6 +430,13 @@ function TransactionsPay() {
                     textAlign: "center",
                   }}
                 >
+                  {t("transaction_pay_type")}{" "}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                  }}
+                >
                   {t("transaction_pay_amount")}
                 </TableCell>
                 <TableCell
@@ -231,14 +445,6 @@ function TransactionsPay() {
                   }}
                 >
                   {t("transaction_pay_company")}
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  {t("transaction_pay_type")}{" "}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -277,6 +483,12 @@ function TransactionsPay() {
           />
         </TableContainer>
       )}
+
+      <ModalTransactions
+        isModalOpen={isModalOpen}
+        handleCloseModal={handleCloseModal}
+        selectedCompany={selectedCompany}
+      />
     </div>
   );
 }
