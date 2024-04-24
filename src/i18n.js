@@ -3,6 +3,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 const storedLanguage = localStorage.getItem("language");
+console.log(storedLanguage);
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -98,6 +99,8 @@ i18n.use(initReactI18next).init({
         pagination_next: "Next",
         pagination_back: "Back",
         loading: "Loading...",
+        language_snackbar_message: "Language updated successfully",
+        language_snackbar_error: "Error updating language",
       },
     },
     es: {
@@ -193,6 +196,8 @@ i18n.use(initReactI18next).init({
         pagination_next: "Siguiente",
         pagination_back: "Atrás",
         loading: "Cargando...",
+        language_snackbar_message: "Idioma actualizado correctamente",
+        language_snackbar_error: "Error al actualizar idioma",
       },
     },
     pt: {
@@ -290,11 +295,13 @@ i18n.use(initReactI18next).init({
         pagination_next: "Próximo",
         pagination_back: "Voltar",
         loading: "Carregando...",
+        language_snackbar_message: "Idioma atualizado com sucesso",
+        language_snackbar_error: "Erro ao atualizar idioma",
       },
     },
   },
   lng: storedLanguage || "us",
-  fallbackLng: "us",
+  fallbackLng: ["us", "es", "pt"],
   interpolation: {
     escapeValue: false,
   },

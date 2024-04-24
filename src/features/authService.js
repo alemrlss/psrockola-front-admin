@@ -11,7 +11,6 @@ const authService = {
       });
 
       if (response.status === 201) {
-        console.log(response.data.user.photo);
         return {
           user: {
             id: response.data.user.id,
@@ -23,6 +22,7 @@ const authService = {
             postalCode: response.data.user.postalCode,
             phone: response.data.user.phone,
             photo: response.data.user.photo,
+            language: response.data.user.language,
           },
           token: response.data.token,
           tokenExpiration: response.data.tokenExpiration,

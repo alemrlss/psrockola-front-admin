@@ -1,6 +1,8 @@
 // authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import i18n from "i18next";
+
 
 // Función de verificación al cargar la aplicación
 const checkAuthentication = () => {
@@ -22,6 +24,9 @@ export const loginAdmin = createAsyncThunk(
       localStorage.setItem("token", response.token);
       localStorage.setItem("tokenExpiration", response.tokenExpiration);
       localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("language", response.user.language);
+      i18n.changeLanguage(response.user.language);
+
       return response;
     } catch (error) {
       return rejectWithValue(error.message || "Error during login");
@@ -60,6 +65,7 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
       localStorage.removeItem("user");
+      localStorage.removeItem("language");
     },
 
     updateUser: (state, action) => {
