@@ -65,12 +65,7 @@ function Sidebar({ handleDrawerToggle }) {
       translationKey: "menu_transactions",
       icon: <MonetizationOnIcon />,
     },
-    {
-      id: "help",
-      translationKey: "menu_help",
-      icon: <HelpOutlineIcon />,
-      subItems: null,
-    },
+
     {
       id: "memberships",
       translationKey: "menu_memberships",

@@ -11,7 +11,6 @@ import Companies from "./views/Users/Companies/Companies";
 import PublicRoute from "./components/Routes/PublicRoute";
 import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import CreateUser from "./views/Users/Create/CreateUser";
-import Memberships from "./views/Memberships/Memberships";
 import EditMemberships from "./views/Memberships/Edit/EditMemberships";
 import Country from "./views/Ubications/Country/Country";
 import State from "./views/Ubications/State/State";
@@ -20,6 +19,7 @@ import Packages from "./views/Packages/Packages";
 import Transactions from "./views/Transactions/Transactions";
 import ListPackages from "./views/Packages/List/ListPackages";
 import DeletedMemberships from "./views/Memberships/Deleted/DeletedMemberships";
+import CreateMemberships from "./views/Memberships/Create/Memberships";
 
 function App() {
   return (
@@ -39,7 +39,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/graphics" element={<Graphics />} />
             <Route path="/transactions" element={<Transactions />} />
-            <Route path="/memberships/create" element={<Memberships />} />
+            <Route path="/memberships/create" element={<CreateMemberships />} />
             <Route path="/memberships/edit" element={<EditMemberships />} />
             <Route
               path="/memberships/eliminated"

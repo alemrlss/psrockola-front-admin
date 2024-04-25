@@ -101,6 +101,7 @@ i18n.use(initReactI18next).init({
         loading: "Loading...",
         language_snackbar_message: "Language updated successfully",
         language_snackbar_error: "Error updating language",
+        membership_create : "Create Membership",
       },
     },
     es: {
@@ -198,6 +199,7 @@ i18n.use(initReactI18next).init({
         loading: "Cargando...",
         language_snackbar_message: "Idioma actualizado correctamente",
         language_snackbar_error: "Error al actualizar idioma",
+        membership_create : "Crear Membresía",
       },
     },
     pt: {
@@ -297,6 +299,7 @@ i18n.use(initReactI18next).init({
         loading: "Carregando...",
         language_snackbar_message: "Idioma atualizado com sucesso",
         language_snackbar_error: "Erro ao atualizar idioma",
+        membership_create : "Criar Membro",
       },
     },
   },
