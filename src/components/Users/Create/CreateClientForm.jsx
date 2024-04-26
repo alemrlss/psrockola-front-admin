@@ -25,6 +25,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
     birthDate: "",
     type: 99,
     codePhone: "+58",
+    language: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -170,6 +171,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
       cityId: updatedUserObject.cityId,
       countryId: updatedUserObject.countryId,
       stateId: updatedUserObject.stateId,
+      language: updatedUserObject.language,
     };
 
     alert(dataToSend.type);
@@ -381,6 +383,23 @@ const CreateClientForm = ({ countries, setCountries }) => {
             ))}
           </TextField>
         </Grid>
+        <Grid item xs={6}>
+          <TextField
+            label="Language"
+            variant="outlined"
+            fullWidth
+            size="small"
+            name="language"
+            value={userObject.language}
+            onChange={handleChange}
+            select
+          >
+            <MenuItem value="es">Español (es)</MenuItem>
+            <MenuItem value="us">English (us)</MenuItem>
+            <MenuItem value="pt">Portugal (pt)</MenuItem>
+          </TextField>
+        </Grid>
+
         <Grid item xs={12}>
           <Button
             variant="contained"

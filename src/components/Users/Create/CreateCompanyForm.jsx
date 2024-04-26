@@ -25,6 +25,7 @@ const CreateCompanyForm = ({ countries, setCountries }) => {
     birthDate: "",
     type: 23,
     codePhone: "+58",
+    language: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -170,8 +171,10 @@ const CreateCompanyForm = ({ countries, setCountries }) => {
       cityId: updatedUserObject.cityId,
       countryId: updatedUserObject.countryId,
       stateId: updatedUserObject.stateId,
+      language: updatedUserObject.language,
     };
 
+    console.log(dataToSend);
     try {
       const response = await api.post("/auth/register", dataToSend);
       setMessage({ text: "Empresa creada con éxito", type: "success" });
@@ -379,6 +382,23 @@ const CreateCompanyForm = ({ countries, setCountries }) => {
             ))}
           </TextField>
         </Grid>
+        <Grid item xs={6}>
+          <TextField
+            label="Language"
+            variant="outlined"
+            fullWidth
+            size="small"
+            name="language"
+            value={userObject.language}
+            onChange={handleChange}
+            select
+          >
+            <MenuItem value="es">Español (es)</MenuItem>
+            <MenuItem value="us">English (us)</MenuItem>
+            <MenuItem value="pt">Portugal (pt)</MenuItem>
+          </TextField>
+        </Grid>
+
         <Grid item xs={12}>
           <Button
             variant="contained"
