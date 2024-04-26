@@ -69,7 +69,21 @@ function LanguageSelector() {
 
   return (
     <>
-      <FormControl>
+      <FormControl
+        sx={{
+          color: "black",
+          "& .MuiSelect-select": {
+            backgroundColor: "transparent",
+          },
+          "& .MuiSelect-icon": {
+            color: "black",
+          },
+          "& .MuiSelect-focus": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
+        {" "}
         <Select
           label="Language"
           value={currentLanguage} // Utiliza el idioma actual válido

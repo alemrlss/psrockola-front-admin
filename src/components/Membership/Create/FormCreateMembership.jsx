@@ -41,6 +41,22 @@ function FormCreateMembership({
                 ))}
               </Select>
             </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel id="interval-label">Periodo de Membresía</InputLabel>
+              <Select
+                labelId="interval-label"
+                id="interval"
+                name="interval"
+                label="Periodo de Membresía"
+                value={formData.interval}
+                onChange={handleChange}
+              >
+                <MenuItem value="month">Month</MenuItem>
+                <MenuItem value="year">Year</MenuItem>
+              </Select>
+            </FormControl>
+
             <FormControl fullWidth>
               <InputLabel id="type-label">Tipo de Membresía</InputLabel>
               <Select
@@ -56,6 +72,7 @@ function FormCreateMembership({
                 <MenuItem value={30}>PREMIUM</MenuItem>
               </Select>
             </FormControl>
+
             <TextField
               label="Nombre"
               id="name"
@@ -64,6 +81,7 @@ function FormCreateMembership({
               value={formData.name}
               onChange={handleChange}
             />
+            
             <TextField
               label="Amount"
               id="amount"
@@ -77,6 +95,7 @@ function FormCreateMembership({
                 maxLength: 3, // Establecer la longitud máxima de dígitos
               }}
             />
+
             <FormControl fullWidth>
               <InputLabel id="currency-label">Currency</InputLabel>
               <Select
@@ -88,7 +107,7 @@ function FormCreateMembership({
                 onChange={handleChange}
               >
                 <MenuItem value="usd">USD</MenuItem>
-                {/* Agregar otras opciones de moneda según sea necesario */}
+                {/* Agrega otras opciones de moneda según sea necesario */}
               </Select>
             </FormControl>
 

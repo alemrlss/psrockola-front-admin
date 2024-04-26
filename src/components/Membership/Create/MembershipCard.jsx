@@ -1,18 +1,21 @@
 import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import getBenefitsMembership from "../../../utils/getBenefitsMembership";
+import getIconMembership from "../../../utils/getIconMembership";
 
-function MembershipCard({ formData, getBenefits }) {
+function MembershipCard({ formData }) {
   return (
     <Grid item xs={12} md={6}>
       <Card
         sx={{ backgroundColor: "#F66E0C", color: "white" }}
         className="h-full"
       >
-        <CardContent className=" mx-12">
+        <CardContent className="mx-12">
           <div className="text-2xl flex items-center font-bold space-x-3">
             <p>{formData.name ? formData.name : " Nombre de la Membresia"}</p>
-            <EmojiEventsIcon fontSize="large" sx={{ color: "yellow" }} />{" "}
+            <div className="rounded-full p-2">
+              {getIconMembership(formData.type).icon}
+            </div>
           </div>
           <p className="text-center text-sm my-2 font-mono"></p>
           <Typography
@@ -28,23 +31,25 @@ function MembershipCard({ formData, getBenefits }) {
             }}
           >
             {formData.currency === "usd" ? "$" : "$"}
-            {formData.amount ? formData.amount : 0} usd/mes
+            {formData.amount ? formData.amount : 0} usd/{formData.interval}
           </Typography>
 
           <div className="mt-6 space-y-2 flex flex-col">
             <Typography variant="h6" className="mb-4">
               <CheckIcon sx={{ color: "green", marginRight: 2 }} />
-              {getBenefits().sales}{" "}
-              {getBenefits().sales === "1" ? "Cuenta" : "Cuentas"} para
-              empleados
+              {getBenefitsMembership(formData.type).sales}{" "}
+              {getBenefitsMembership(formData.type).sales === "1"
+                ? "Cuenta"
+                : "Cuentas"}{" "}
+              para empleados
             </Typography>
             <Typography variant="h6" className="mb-4">
               <CheckIcon sx={{ color: "green", marginRight: 2 }} />
-              {getBenefits().skins} Skins disponibles
+              {getBenefitsMembership(formData.type).skins} Skins disponibles
             </Typography>
             <Typography variant="h6" className="mb-2">
               <CheckIcon sx={{ color: "green", marginRight: 2 }} />1 Pantalla
-              (Maximo {getBenefits().screens} pantallas)
+              (Maximo {getBenefitsMembership(formData.type).screens} pantallas)
             </Typography>
           </div>
           <Button

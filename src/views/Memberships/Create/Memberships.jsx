@@ -14,6 +14,7 @@ function CreateMemberships() {
     amount: "",
     currency: "",
     type: "",
+    interval: "",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -37,6 +38,7 @@ function CreateMemberships() {
     setSuccess("");
 
     setFormData({ ...formData, [name]: value });
+
   };
 
   const handleSubmit = async (e) => {
@@ -69,6 +71,7 @@ function CreateMemberships() {
         amount: "",
         currency: null,
         type: null,
+        interval: "",
       });
       setSuccess("Membresía creada correctamente");
     } catch (error) {
