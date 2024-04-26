@@ -7,7 +7,7 @@ console.log(storedLanguage);
 
 i18n.use(initReactI18next).init({
   resources: {
-    us: {
+    en: {
       translation: {
         title_dashboard: "Dashboard",
         title_graphics: "Graphics",
@@ -101,7 +101,7 @@ i18n.use(initReactI18next).init({
         loading: "Loading...",
         language_snackbar_message: "Language updated successfully",
         language_snackbar_error: "Error updating language",
-        membership_create : "Create Membership",
+        membership_create: "Create Membership",
       },
     },
     es: {
@@ -199,7 +199,7 @@ i18n.use(initReactI18next).init({
         loading: "Cargando...",
         language_snackbar_message: "Idioma actualizado correctamente",
         language_snackbar_error: "Error al actualizar idioma",
-        membership_create : "Crear Membresía",
+        membership_create: "Crear Membresía",
       },
     },
     pt: {
@@ -299,12 +299,12 @@ i18n.use(initReactI18next).init({
         loading: "Carregando...",
         language_snackbar_message: "Idioma atualizado com sucesso",
         language_snackbar_error: "Erro ao atualizar idioma",
-        membership_create : "Criar Membro",
+        membership_create: "Criar Membro",
       },
     },
   },
-  lng: storedLanguage || "us",
-  fallbackLng: ["us", "es", "pt"],
+  lng: storedLanguage || "en",
+  fallbackLng: ["en", "es", "pt"],
   interpolation: {
     escapeValue: false,
   },

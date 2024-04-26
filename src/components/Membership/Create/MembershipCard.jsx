@@ -28,15 +28,15 @@ function MembershipCard({ formData, getBenefits }) {
             }}
           >
             {formData.currency === "usd" ? "$" : "$"}
-            {formData.amount ? formData.amount : 0}
+            {formData.amount ? formData.amount : 0} usd/mes
           </Typography>
-          <Typography variant="h5">por usuario/mes facturado</Typography>
 
           <div className="mt-6 space-y-2 flex flex-col">
             <Typography variant="h6" className="mb-4">
               <CheckIcon sx={{ color: "green", marginRight: 2 }} />
               {getBenefits().sales}{" "}
-              {getBenefits().sales === "1" ? "Cuenta" : "Cuentas"} para ventas
+              {getBenefits().sales === "1" ? "Cuenta" : "Cuentas"} para
+              empleados
             </Typography>
             <Typography variant="h6" className="mb-4">
               <CheckIcon sx={{ color: "green", marginRight: 2 }} />
