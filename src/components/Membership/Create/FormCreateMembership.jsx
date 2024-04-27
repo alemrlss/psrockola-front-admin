@@ -81,7 +81,7 @@ function FormCreateMembership({
               value={formData.name}
               onChange={handleChange}
             />
-            
+
             <TextField
               label="Amount"
               id="amount"
@@ -90,10 +90,6 @@ function FormCreateMembership({
               type="number"
               value={formData.amount}
               onChange={handleChange}
-              inputProps={{
-                max: 200, // Establecer el monto máximo
-                maxLength: 3, // Establecer la longitud máxima de dígitos
-              }}
             />
 
             <FormControl fullWidth>
