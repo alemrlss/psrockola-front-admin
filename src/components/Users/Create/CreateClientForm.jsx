@@ -21,7 +21,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
     postalCode: "",
     password: "",
     email: "",
-    logo: "logo-example.jpg",
+    logo: null,
     birthDate: "",
     type: 99,
     codePhone: "+58",
@@ -30,40 +30,6 @@ const CreateClientForm = ({ countries, setCountries }) => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
-
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-
-  useEffect(() => {
-    if (selectedCountry) {
-      const fetchStates = async () => {
-        try {
-          const response = await api.get(`/state/${selectedCountry}`);
-          setStates(response.data.data);
-        } catch (error) {
-          console.error("Error al obtener estados:", error);
-        }
-      };
-      fetchStates();
-    }
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    if (selectedState) {
-      const fetchCities = async () => {
-        try {
-          const response = await api.get(`/city/${selectedState}`);
-          setCities(response.data.data);
-        } catch (error) {
-          console.error("Error al obtener ciudades:", error);
-        }
-      };
-
-      fetchCities();
-    }
-  }, [selectedState]);
 
   const handleChange = (event) => {
     setMessage({ text: "", type: "" });
@@ -74,19 +40,9 @@ const CreateClientForm = ({ countries, setCountries }) => {
     }));
 
     if (name === "country") {
-      setSelectedCountry(Number(value));
-      setSelectedState("");
       setUserObject((prevUserObject) => ({
         ...prevUserObject,
         stateId: 0,
-        cityId: 0,
-      }));
-    }
-
-    if (name === "state") {
-      setSelectedState(Number(value));
-      setUserObject((prevUserObject) => ({
-        ...prevUserObject,
         cityId: 0,
       }));
     }
@@ -106,9 +62,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
       !userObject.lastname ||
       !userObject.postalCode ||
       !userObject.birthDate ||
-      !userObject.country ||
-      !userObject.state ||
-      !userObject.city
+      !userObject.country
     ) {
       setMessage({
         text: "Por favor, complete todos los campos obligatorios.",
@@ -194,10 +148,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
         type: 99,
         codePhone: "+58",
       });
-      setSelectedCountry("");
-      setStates([]);
-      setSelectedState("");
-      setCities([]);
+
       setCountries([]);
     } catch (error) {
       setMessage({ text: error.response.data.message, type: "error" });
@@ -347,42 +298,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
             ))}
           </TextField>
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="State"
-            variant="outlined"
-            fullWidth
-            size="small"
-            name="state"
-            value={userObject.state}
-            onChange={handleChange}
-            select
-          >
-            {states.map((state) => (
-              <MenuItem key={state.id} value={state.id}>
-                {state.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="City"
-            variant="outlined"
-            fullWidth
-            size="small"
-            name="city"
-            value={userObject.city}
-            onChange={handleChange}
-            select
-          >
-            {cities.map((city) => (
-              <MenuItem key={city.id} value={city.id}>
-                {city.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
+
         <Grid item xs={6}>
           <TextField
             label="Language"

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -13,55 +13,18 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
     country: "",
     state: "",
     city: "",
-    cityId: 0,
-    stateId: 0,
     address: "",
     phone: "",
     postalCode: "",
     password: "",
     email: "",
-    logo: "logo-example.jpg",
-    birthDate: "",
+    logo: null,
     type: 18,
     codePhone: "+58",
   });
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
-
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-
-  useEffect(() => {
-    if (selectedCountry) {
-      const fetchStates = async () => {
-        try {
-          const response = await api.get(`/state/${selectedCountry}`);
-          setStates(response.data.data);
-        } catch (error) {
-          console.error("Error al obtener estados:", error);
-        }
-      };
-      fetchStates();
-    }
-  }, [selectedCountry]);
-
-  useEffect(() => {
-    if (selectedState) {
-      const fetchCities = async () => {
-        try {
-          const response = await api.get(`/city/${selectedState}`);
-          setCities(response.data.data);
-        } catch (error) {
-          console.error("Error al obtener ciudades:", error);
-        }
-      };
-
-      fetchCities();
-    }
-  }, [selectedState]);
 
   const handleChange = (event) => {
     setMessage({ text: "", type: "" });
@@ -72,19 +35,9 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
     }));
 
     if (name === "country") {
-      setSelectedCountry(Number(value));
-      setSelectedState("");
       setUserObject((prevUserObject) => ({
         ...prevUserObject,
         stateId: 0,
-        cityId: 0,
-      }));
-    }
-
-    if (name === "state") {
-      setSelectedState(Number(value));
-      setUserObject((prevUserObject) => ({
-        ...prevUserObject,
         cityId: 0,
       }));
     }
@@ -102,10 +55,7 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
       !userObject.password ||
       !userObject.phone ||
       !userObject.postalCode ||
-      !userObject.birthDate ||
-      !userObject.country ||
-      !userObject.state ||
-      !userObject.city
+      !userObject.country
     ) {
       setMessage({
         text: "Por favor, complete todos los campos obligatorios.",
@@ -127,19 +77,6 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
     if (userObject.password.length < 6) {
       setMessage({
         text: "La contraseña debe tener al menos 6 caracteres.",
-        type: "error",
-      });
-      setLoading(false);
-      return;
-    }
-
-    const birthDate = new Date(userObject.birthDate);
-    const eighteenYearsAgo = new Date();
-    eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
-
-    if (birthDate >= eighteenYearsAgo) {
-      setMessage({
-        text: "Debe tener al menos 18 años para registrarse.",
         type: "error",
       });
       setLoading(false);
@@ -187,10 +124,6 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
         type: 18,
         codePhone: "+58",
       });
-      setSelectedCountry("");
-      setStates([]);
-      setSelectedState("");
-      setCities([]);
       setCountries([]);
     } catch (error) {
       setMessage({ text: error.response.data.message, type: "error" });
@@ -296,21 +229,7 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
           />
         </Grid>
 
-        <Grid item xs={6}>
-          <TextField
-            label="Birth Date"
-            type="date"
-            variant="outlined"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            size="small"
-            name="birthDate"
-            value={userObject.birthDate}
-            onChange={handleChange}
-          />
-        </Grid>
+    
         <Grid item xs={6}>
           <TextField
             label="Country"
@@ -329,42 +248,7 @@ const CreateModeradorForm = ({ countries, setCountries }) => {
             ))}
           </TextField>
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="State"
-            variant="outlined"
-            fullWidth
-            size="small"
-            name="state"
-            value={userObject.state}
-            onChange={handleChange}
-            select
-          >
-            {states.map((state) => (
-              <MenuItem key={state.id} value={state.id}>
-                {state.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="City"
-            variant="outlined"
-            fullWidth
-            size="small"
-            name="city"
-            value={userObject.city}
-            onChange={handleChange}
-            select
-          >
-            {cities.map((city) => (
-              <MenuItem key={city.id} value={city.id}>
-                {city.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
+
         <Grid item xs={12}>
           <Button
             variant="contained"
