@@ -102,6 +102,8 @@ i18n.use(initReactI18next).init({
         language_snackbar_message: "Language updated successfully",
         language_snackbar_error: "Error updating language",
         membership_create: "Create Membership",
+        monthly_memberships: "Monthly",
+        yearly_memberships: "Yearly",
       },
     },
     es: {
@@ -200,6 +202,8 @@ i18n.use(initReactI18next).init({
         language_snackbar_message: "Idioma actualizado correctamente",
         language_snackbar_error: "Error al actualizar idioma",
         membership_create: "Crear Membresía",
+        monthly_memberships: "Mensual",
+        yearly_memberships: "Anual",
       },
     },
     pt: {
@@ -300,6 +304,8 @@ i18n.use(initReactI18next).init({
         language_snackbar_message: "Idioma atualizado com sucesso",
         language_snackbar_error: "Erro ao atualizar idioma",
         membership_create: "Criar Membro",
+        monthly_memberships: "Mensal",
+        yearly_memberships: "Anual",
       },
     },
   },

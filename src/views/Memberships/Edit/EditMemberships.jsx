@@ -1,25 +1,21 @@
 import { useState, useEffect } from "react";
 import {
-  Button,
   Select,
   MenuItem,
   InputLabel,
   FormControl,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
   Grid,
-  Box,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import api from "../../../api/api";
-import getBenefits from "../../../utils/getBenefits";
 import MembershipCard from "../../../components/Membership/MembershipCard";
 import ModalEditMembership from "../../../components/Membership/ModalEditMembership";
 import ModalDeleteMembership from "../../../components/Membership/ModalDeleteMembership";
+import { useTranslation } from "react-i18next";
 
 function EditMemberships() {
+  const { t } = useTranslation();
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [memberships, setMemberships] = useState([]);
@@ -27,6 +23,8 @@ function EditMemberships() {
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
   const [selectedMembership, setSelectedMembership] = useState(null);
+
+  const [filterInterval, setFilterInterval] = useState("month");
 
   const handleEditClick = (membership) => {
     setSelectedMembership(membership);
@@ -65,6 +63,7 @@ function EditMemberships() {
     setSelectedCountry(event.target.value);
     try {
       const response = await api.get(`/membership/${event.target.value}`);
+      console.log(response.data);
       setMemberships(response.data);
     } catch (error) {
       console.error("Error fetching memberships:", error);
@@ -105,7 +104,9 @@ function EditMemberships() {
       console.error("Error deleting membership:", error);
     }
   };
-
+  const filteredMemberships = memberships.filter(
+    (membership) => membership.interval === filterInterval
+  );
   return (
     <div>
       <FormControl fullWidth>
@@ -129,9 +130,36 @@ function EditMemberships() {
         </Select>
       </FormControl>
 
+      <div className="flex items-center">
+        <span className="mr-4">{t("monthly_memberships")}</span>{" "}
+        {/* Etiqueta "month" */}
+        <FormControlLabel
+          control={
+            <Switch
+              checked={filterInterval === "year"}
+              onChange={() =>
+                setFilterInterval(filterInterval === "year" ? "month" : "year")
+              }
+              sx={{
+                "& .MuiSwitch-thumb": {
+                  backgroundColor: "#FFA500",
+                },
+
+                "& .MuiSwitch-thumb.Mui-checked": {
+                  transform: "translateX(24px)",
+                },
+              }}
+            />
+          }
+          label="" // No hace falta poner un texto aquí, ya que se manejan por separado.
+        />
+        <span className="ml-4">{t("yearly_memberships")}</span>{" "}
+        {/* Etiqueta "year" */}
+      </div>
+
       {/* Muestra las membresías */}
       <Grid container spacing={2}>
-        {memberships.map((membership) => (
+        {filteredMemberships.map((membership) => (
           <MembershipCard
             key={membership.id}
             membership={membership}
