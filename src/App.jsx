@@ -20,6 +20,7 @@ import Transactions from "./views/Transactions/Transactions";
 import ListPackages from "./views/Packages/List/ListPackages";
 import DeletedMemberships from "./views/Memberships/Deleted/DeletedMemberships";
 import CreateMemberships from "./views/Memberships/Create/Memberships";
+import Distributors from "./views/Users/Distributors/Distributors";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="/users/clients" element={<Clients />} />
             <Route path="/users/companies" element={<Companies />} />
             <Route path="/users/moderators" element={<Moderators />} />
+            <Route path="/users/distributors" element={<Distributors />} />
             <Route path="/users/create-user" element={<CreateUser />} />
             <Route path="/ubications/country" element={<Country />} />
             <Route path="/ubications/state" element={<State />} />

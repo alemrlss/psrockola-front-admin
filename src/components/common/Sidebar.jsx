@@ -53,6 +53,11 @@ function Sidebar({ handleDrawerToggle }) {
           icon: <SupervisorAccountIcon />,
         },
         {
+          id: "distributors",
+          translationKey: "menu_distributors",
+          icon: <SupervisorAccountIcon />,
+        },
+        {
           id: "create-user",
           translationKey: "Crear",
           icon: <DashboardIcon />,
