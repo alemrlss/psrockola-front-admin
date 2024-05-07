@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import api from "../../../api/api";
 import CreateClientForm from "../../../components/Users/Create/CreateClientForm";
 import CreateModeradorForm from "../../../components/Users/Create/CreateModeradorForm";
+import CreateDistributorsForm from "../../../components/Users/Create/CreateDistributors";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,6 +83,7 @@ export default function FullWidthTabs() {
           <Tab label="Company" {...a11yProps(0)} />
           <Tab label="Client" {...a11yProps(1)} />
           <Tab label="Moderador" {...a11yProps(2)} />
+          <Tab label="Distributors" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
 
@@ -96,6 +98,9 @@ export default function FullWidthTabs() {
           countries={countries}
           setCountries={setCountries}
         />
+      </TabPanel>
+      <TabPanel value={value} index={3} dir={theme.direction}>
+        <CreateDistributorsForm countries={countries} setCountries={setCountries} />
       </TabPanel>
     </Box>
   );
