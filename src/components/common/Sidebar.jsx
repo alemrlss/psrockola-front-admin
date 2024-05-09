@@ -69,7 +69,47 @@ function Sidebar({ handleDrawerToggle }) {
       translationKey: "menu_transactions",
       icon: <MonetizationOnIcon />,
     },
-
+    {
+      id: "memberships",
+      translationKey: "menu_memberships",
+      icon: <AccountBalanceIcon />,
+      subItems: [
+        {
+          id: "companies",
+          translationKey: "Companies",
+          icon: <BusinessIcon />,
+          subItems: [
+            {
+              id: "create",
+              translationKey: "menu_membership_create",
+              icon: <BusinessIcon />,
+            },
+            {
+              id: "edit",
+              translationKey: "menu_membership_edit",
+              icon: <PersonIcon />,
+            },
+            {
+              id: "eliminated",
+              translationKey: "menu_membership_eliminated",
+              icon: <PersonIcon />,
+            },
+          ],
+        },
+        {
+          id: "distributors",
+          translationKey: "Distributors",
+          icon: <PersonIcon />,
+          subItems: [
+            {
+              id: "create-membership",
+              translationKey: "menu_membership_create",
+              icon: <BusinessIcon />,
+            },
+          ],
+        },
+      ],
+    },
     {
       id: "memberships",
       translationKey: "menu_memberships",

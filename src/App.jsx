@@ -21,6 +21,7 @@ import ListPackages from "./views/Packages/List/ListPackages";
 import DeletedMemberships from "./views/Memberships/Deleted/DeletedMemberships";
 import CreateMemberships from "./views/Memberships/Create/Memberships";
 import Distributors from "./views/Users/Distributors/Distributors";
+import CreateMembershipDistributor from "./views/Memberships/Distributors/Create/CreateMembershipDistributor";
 
 function App() {
   return (
@@ -40,11 +41,15 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/graphics" element={<Graphics />} />
             <Route path="/transactions" element={<Transactions />} />
-            <Route path="/memberships/create" element={<CreateMemberships />} />
-            <Route path="/memberships/edit" element={<EditMemberships />} />
+            <Route path="/companies/create" element={<CreateMemberships />} />
+            <Route path="/companies/edit" element={<EditMemberships />} />
             <Route
-              path="/memberships/eliminated"
+              path="/companies/eliminated"
               element={<DeletedMemberships />}
+            />
+            <Route
+              path="/distributors/create-membership"
+              element={<CreateMembershipDistributor />}
             />
             <Route path="/users/clients" element={<Clients />} />
             <Route path="/users/companies" element={<Companies />} />
