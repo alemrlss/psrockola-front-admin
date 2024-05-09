@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { TextField, Button, Typography, Container, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import api from "../../api/api";
 
 function Packages() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [price, setPrice] = useState("");
+  const [type, setType] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState(""); // Nuevo estado para el mensaje de éxito
 
@@ -15,6 +26,7 @@ function Packages() {
     // Convertir el precio a centavos
     const priceInCents = parseFloat(price) * 100;
 
+    console.log(type);
     try {
       // Realizar la solicitud al backend para crear el Package
       await api.post("package-rockobits", {
@@ -22,10 +34,12 @@ function Packages() {
         currency: "USD",
         amount: parseFloat(amount),
         price: priceInCents,
+        type,
       });
 
       // Limpiar los campos después de crear el Package
       setName("");
+      setType("");
       setAmount("");
       setPrice("");
       setErrorMessage("");
@@ -80,6 +94,25 @@ function Packages() {
             required
             margin="normal"
           />
+<FormControl fullWidth>
+    <InputLabel id="type-label">Type</InputLabel>
+    <Select
+        labelId="type-label"
+        id="type"
+        name="type"
+        label="Type"
+        onChange={(e) => setType(e.target.value)}
+        value={type}
+    >
+        <MenuItem value="">
+            <em>None</em> 
+        </MenuItem>
+        <MenuItem value="companies">Companies</MenuItem>
+        <MenuItem value="distributors">Distributors</MenuItem>
+    </Select>
+</FormControl>
+
+
           {errorMessage && (
             <Typography variant="body2" color="error" gutterBottom>
               {errorMessage}

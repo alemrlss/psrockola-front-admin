@@ -6,53 +6,56 @@ import {
   Button,
   Modal,
   TextField,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import api from "../../../api/api";
 
 function ListPackages() {
   const [packages, setPackages] = useState([]);
-  const [openModalEdit, setOpenModalEdit] = useState(false); // Estado para controlar si el modal está abierto
-  const [openModalDelete, setOpenModalDelete] = useState(false); // Estado para controlar si el modal está abierto
-  const [editedPackage, setEditedPackage] = useState(null); // Estado para almacenar el paquete que se está editando
+  const [currentTab, setCurrentTab] = useState(0); // Estado para manejar la pestaña seleccionada
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [editedPackage, setEditedPackage] = useState(null);
 
-  // Función para cargar los Packages al cargar el componente
+  // Función para cargar los paquetes según la pestaña seleccionada
   useEffect(() => {
     loadPackages();
-  }, []);
+  }, [currentTab]);
 
-  // Función para cargar los Packages
   const loadPackages = async () => {
+    // Determina el endpoint a usar según la pestaña seleccionada
+    const endpoint =
+      currentTab === 0
+        ? "package-rockobits/companies"
+        : "package-rockobits/distributors";
     try {
-      const response = await api.get("package-rockobits");
+      const response = await api.get(endpoint);
       setPackages(response.data.data);
     } catch (error) {
       console.error("Error al cargar los Packages:", error);
     }
   };
 
-  // Función para abrir el modal de edición
-  const openEditModalEdit = (pkg) => {
+  const openEditModal = (pkg) => {
     setEditedPackage(pkg);
     setOpenModalEdit(true);
   };
 
-  // Función para cerrar el modal de edición
   const closeEditModal = () => {
     setOpenModalEdit(false);
   };
-  // Función para abrir el modal de eliminacion
+
   const openDeleteModal = (pkg) => {
     setEditedPackage(pkg);
     setOpenModalDelete(true);
   };
 
-  // Función para cerrar el modal de eliminacion
   const closeDeleteModal = () => {
     setOpenModalDelete(false);
   };
 
-  // Función para manejar cambios en los campos del paquete editado
   const handlePackageFieldChange = (field, value) => {
     setEditedPackage({
       ...editedPackage,
@@ -60,20 +63,16 @@ function ListPackages() {
     });
   };
 
-  // Función para guardar los cambios del paquete editado
   const saveChanges = async () => {
     try {
       const response = await api.patch(
         `package-rockobits/${editedPackage.id}`,
         editedPackage
       );
-
-      // Actualizar la lista de paquetes
       const updatedPackages = packages.map((pkg) =>
         pkg.id === editedPackage.id ? response.data.data : pkg
       );
       setPackages(updatedPackages);
-
       closeEditModal();
     } catch (error) {
       console.error("Error al guardar los cambios:", error);
@@ -83,12 +82,10 @@ function ListPackages() {
   const saveChangesDelete = async () => {
     try {
       await api.patch(`package-rockobits/delete/${editedPackage.id}`);
-      // Actualizar la lista de paquetes
       const updatedPackages = packages.filter(
         (pkg) => pkg.id !== editedPackage.id
       );
       setPackages(updatedPackages);
-
       closeDeleteModal();
     } catch (error) {
       console.error("Error al guardar los cambios:", error);
@@ -100,32 +97,66 @@ function ListPackages() {
       <Typography variant="h4" gutterBottom>
         Packages Available
       </Typography>
+
+      {/* Barra de pestañas */}
+      <Tabs
+        value={currentTab}
+        onChange={(e, newValue) => setCurrentTab(newValue)}
+      >
+        <Tab label="Companies" />
+        <Tab label="Distributors" />
+      </Tabs>
+
+      {/* Lista de paquetes */}
       <List>
-        {packages.map((pkg, index) => (
-          <ListItem
-            key={index}
-            sx={{
-              borderBottom: "1px solid #ccc",
-              "&:last-child": {
-                borderBottom: "none",
-              },
-            }}
-          >
-            <Typography variant="body1">
-              <strong>Name:</strong> {pkg.name} | <strong>Amount(RB):</strong>{" "}
-              {pkg.rockobitsAmount} | <strong>Price:</strong> {pkg.price / 100}{" "}
-              USD
-            </Typography>
-            {/* Botón para editar */}
-            <Button variant="outlined" onClick={() => openEditModalEdit(pkg)}>
-              Edit
-            </Button>
-            <Button variant="outlined" onClick={() => openDeleteModal(pkg)}>
-              Delete
-            </Button>
-          </ListItem>
-        ))}
+      {packages.map((pkg, index) => (
+  <ListItem
+    key={index}
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      padding: 2,
+      margin: 1,
+      borderRadius: 1,
+      backgroundColor: '#f5f5f5',
+      boxShadow: 1,
+    }}
+  >
+    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+      {pkg.name}
+    </Typography>
+
+    <Typography variant="body1" sx={{ mb: 1 }}>
+      Amount: {pkg.rockobitsAmount} RB
+    </Typography>
+
+    <Typography variant="body1" sx={{ mb: 2 }}>
+      Price: {pkg.price / 100} USD
+    </Typography>
+
+    <Box sx={{ display: 'flex', gap: 1 }}>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => openEditModal(pkg)}
+        sx={{ fontWeight: 'bold' }}
+      >
+        Edit
+      </Button>
+      <Button
+        variant="outlined"
+        color="error"
+        onClick={() => openDeleteModal(pkg)}
+        sx={{ fontWeight: 'bold' }}
+      >
+        Delete
+      </Button>
+    </Box>
+  </ListItem>
+))}
+
       </List>
+
       {/* Modal de edición */}
       <Modal open={openModalEdit} onClose={closeEditModal}>
         <Box

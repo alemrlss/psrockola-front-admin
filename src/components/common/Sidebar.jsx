@@ -106,32 +106,21 @@ function Sidebar({ handleDrawerToggle }) {
               translationKey: "menu_membership_create",
               icon: <BusinessIcon />,
             },
+            {
+              id: "edit-membership",
+              translationKey: "menu_membership_edit",
+              icon: <PersonIcon />,
+            },
+            {
+              id: "eliminated-membership",
+              translationKey: "menu_membership_eliminated",
+              icon: <PersonIcon />,
+            },
           ],
         },
       ],
     },
-    {
-      id: "memberships",
-      translationKey: "menu_memberships",
-      icon: <AccountBalanceIcon />,
-      subItems: [
-        {
-          id: "create",
-          translationKey: "menu_membership_create",
-          icon: <BusinessIcon />,
-        },
-        {
-          id: "edit",
-          translationKey: "menu_membership_edit",
-          icon: <PersonIcon />,
-        },
-        {
-          id: "eliminated",
-          translationKey: "menu_membership_eliminated",
-          icon: <PersonIcon />,
-        },
-      ],
-    },
+
     {
       id: "ubications",
       translationKey: "menu_ubications",
