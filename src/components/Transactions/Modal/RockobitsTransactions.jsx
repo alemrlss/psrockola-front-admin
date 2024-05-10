@@ -35,16 +35,21 @@ function RockobitsTransactions({ selectedCompany }) {
   const fetchTransactions = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get(
-        `transactions/rockobits/${selectedCompany.id}`,
-        {
-          params: {
-            skip: page * take,
-            take,
-            isEmployee: false,
-          },
-        }
-      );
+      let endpoint;
+      if (selectedCompany.type === 25) {
+        endpoint = `/transactions/rockobits/distributor/${selectedCompany.id}`;
+      }
+
+      if (selectedCompany.type === 23) {
+        endpoint = `/transactions/rockobits/${selectedCompany.id}`;
+      }
+      const response = await api.get(endpoint, {
+        params: {
+          skip: page * take,
+          take,
+          isEmployee: false,
+        },
+      });
       setTransactions(response.data.data.transactions);
       setTotalCount(response.data.data.total);
     } catch (error) {
@@ -232,6 +237,45 @@ function RockobitsTransactions({ selectedCompany }) {
 
     //verde se acredita
     if (transaction.type === "rockobits") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Compra de Rockobits en la plataforma
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+              color: "green",
+              fontWeight: "bold",
+              fontSize: "20px",
+            }}
+          >
+            + {transaction.amount}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            PLATAFORMA
+          </TableCell>
+        </TableRow>
+      );
+    }
+    
+    if (transaction.type === "distributor_rockobits") {
       return (
         <TableRow key={transaction.id}>
           <TableCell

@@ -69,6 +69,7 @@ function TransactionsPay() {
           membership: isMembershipChecked ? "true" : "false",
           screen: isScreenChecked ? "true" : "false",
           rockobits: isRockobitsChecked ? "true" : "false",
+          rockobitsDistributor: isRockobitsChecked ? "true" : "false",
         },
       });
       setTransactions(response.data.data.transactions);
@@ -217,6 +218,49 @@ function TransactionsPay() {
         </TableRow>
       );
     }
+    if (transaction.type === "distributor_membership") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {t("transaction_pay_type_membership")} (Distribuidor){" "}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              onClick={() => handleOpenModal(transaction.distributor)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.distributor.name}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      );
+    }
     if (transaction.type === "screen") {
       return (
         <TableRow key={transaction.id}>
@@ -255,6 +299,51 @@ function TransactionsPay() {
               }}
             >
               {transaction.company.name}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (transaction.type === "distributor_rockobits") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {t("transaction_pay_type_rockobits")} {transaction.rockobits}{" "}
+            Rockobits (Distribuidor)
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              onClick={() => handleOpenModal(transaction.distributor)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.distributor.name}
             </Typography>
           </TableCell>
         </TableRow>

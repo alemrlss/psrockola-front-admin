@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Button, Modal, Tabs, Tab, Typography } from "@mui/material";
 import PayTransactions from "./Modal/PayTransactions";
 import RockobitsTransactions from "./Modal/RockobitsTransactions";
@@ -62,6 +62,12 @@ function ModalTransactions({ isModalOpen, handleCloseModal, selectedCompany }) {
               {" "}
               {selectedCompany && selectedCompany.name}
             </span>
+            {selectedCompany?.type === 23 && (
+              <span className="font-bold"> (Company)</span>
+            )}
+            {selectedCompany?.type === 25 && (
+              <span className="font-bold"> (Ditributor)</span>
+            )}
           </Typography>
         </Box>
 
@@ -69,7 +75,7 @@ function ModalTransactions({ isModalOpen, handleCloseModal, selectedCompany }) {
         <Tabs value={activeTab} onChange={handleTabChange} centered>
           <Tab label="Rockobits" />
           <Tab label="Pay" />
-          <Tab label="QR" />
+          {selectedCompany && selectedCompany.type === 23 && <Tab label="QR" />}
         </Tabs>
 
         {/* Contenido de cada pestaña */}

@@ -28,26 +28,118 @@ function LastOrders({ data }) {
   const renderTypeTransaction = (transaction) => {
     if (transaction.type === "membership") {
       return (
-        <TableCell sx={{ textAlign: "center" }}>
-          {t("transaction_pay_type_membership")}{" "}
-          {getTypeString(transaction.membership.type)}
-        </TableCell>
+        <TableRow key={transaction.id}>
+          <TableCell sx={{ textAlign: "center" }}>
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {t("transaction_pay_type_membership")}{" "}
+            {getTypeString(transaction.membership.type)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.company.name}
+          </TableCell>
+        </TableRow>
+      );
+    }
+    if (transaction.type === "distributor") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell sx={{ textAlign: "center" }}>
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {t("transaction_pay_type_membership")}{" "}
+            {getTypeString(transaction.membership.type)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.company.name}
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (transaction.type === "distributor_membership") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell sx={{ textAlign: "center" }}>
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {t("transaction_pay_type_membership")} (Distribuidor)
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.distributor.name}
+          </TableCell>
+        </TableRow>
       );
     }
 
     if (transaction.type === "screen") {
       return (
-        <TableCell sx={{ textAlign: "center" }}>
-          {t("transaction_pay_type_screen")} Screen {transaction.screen.code}
-        </TableCell>
+        <TableRow key={transaction.id}>
+          <TableCell sx={{ textAlign: "center" }}>
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {t("transaction_pay_type_screen")} Screen {transaction.screen.code}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.company.name}
+          </TableCell>
+        </TableRow>
       );
     }
 
     if (transaction.type === "rockobits") {
       return (
-        <TableCell sx={{ textAlign: "center" }}>
-          {t("transaction_pay_type_rockobits")} {transaction.rockobits} Rockobits
-        </TableCell>
+        <TableRow key={transaction.id}>
+          <TableCell sx={{ textAlign: "center" }}>
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {t("transaction_pay_type_rockobits")} {transaction.rockobits}{" "}
+            Rockobits
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.company.name}
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (transaction.type === "distributor_rockobits") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell sx={{ textAlign: "center" }}>
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {t("transaction_pay_type_rockobits")} {transaction.rockobits}{" "}
+            Rockobits(Distribuidor)
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.amount / 100}$
+          </TableCell>
+          <TableCell sx={{ textAlign: "center" }}>
+            {transaction.distributor?.name}
+          </TableCell>
+        </TableRow>
       );
     }
   };
@@ -83,20 +175,7 @@ function LastOrders({ data }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {formatDate(row.createdAt)}
-                  </TableCell>
-                  {renderTypeTransaction(row)}
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {row.amount/100}$
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {row.company.name}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {data.map((row) => renderTypeTransaction(row))}
             </TableBody>
           </Table>
         </TableContainer>

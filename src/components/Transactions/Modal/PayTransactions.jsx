@@ -28,15 +28,21 @@ function PayTransactions({ selectedCompany }) {
   const fetchTransactions = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get(
-        `/transactions/pay/${selectedCompany.id}`,
-        {
-          params: {
-            skip: page * take,
-            take,
-          },
-        }
-      );
+      let endpoint;
+
+      if (selectedCompany.type === 25) {
+        endpoint = `/transactions/pay/distributor/${selectedCompany.id}`;
+      }
+
+      if (selectedCompany.type === 23) {
+        endpoint = `/transactions/pay/${selectedCompany.id}`;
+      }
+      const response = await api.get(endpoint, {
+        params: {
+          skip: page * take,
+          take,
+        },
+      });
       setTransactions(response.data.data.transactions);
       setTotalCount(response.data.data.total);
     } catch (error) {
@@ -126,6 +132,33 @@ function PayTransactions({ selectedCompany }) {
             }}
           >
             Compra de Membresia: {getTypeString(transaction.membership.type)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.amount / 100}$
+          </TableCell>
+        </TableRow>
+      );
+    }
+    if (transaction.type === "distributor_rockobits") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Compra de {transaction.rockobits} Rockobits
           </TableCell>
           <TableCell
             sx={{
