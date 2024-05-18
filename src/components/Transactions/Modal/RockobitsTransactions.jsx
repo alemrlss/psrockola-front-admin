@@ -274,7 +274,7 @@ function RockobitsTransactions({ selectedCompany }) {
         </TableRow>
       );
     }
-    
+
     if (transaction.type === "distributor_rockobits") {
       return (
         <TableRow key={transaction.id}>
@@ -348,6 +348,46 @@ function RockobitsTransactions({ selectedCompany }) {
             }}
           >
             {transaction.receiver.name}
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (transaction.type === "transfer_rockobits_distributor_to_subcompany") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            Transferencia a Sub-empresa
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+              color: "red",
+              fontWeight: "bold",
+              fontSize: "20px",
+            }}
+          >
+            - {transaction.amount}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.receiverSubcompany.name}
           </TableCell>
         </TableRow>
       );
