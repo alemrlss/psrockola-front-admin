@@ -170,6 +170,34 @@ function PayTransactions({ selectedCompany }) {
         </TableRow>
       );
     }
+
+    if (transaction.type === "distributor_membership") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Compra de Membresia Distributor
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.amount / 100}$
+          </TableCell>
+        </TableRow>
+      );
+    }
   };
 
   const getTypeString = (type) => {
