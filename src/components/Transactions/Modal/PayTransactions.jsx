@@ -186,7 +186,9 @@ function PayTransactions({ selectedCompany }) {
               textAlign: "center",
             }}
           >
-            Compra de Membresia Distributor
+            Compra de Membresia{" "}
+            {getTypeDistributorString(transaction.membershipDistributor.type)}{" "}
+            (Distributor)
           </TableCell>
           <TableCell
             sx={{
@@ -209,6 +211,29 @@ function PayTransactions({ selectedCompany }) {
     }
     if (type === 30) {
       return "PREMIUM";
+    }
+
+    return "Unknown";
+  };
+
+  const getTypeDistributorString = (type) => {
+    if (type === 5) {
+      return "BEGINNER";
+    }
+    if (type === 10) {
+      return "STARTER";
+    }
+    if (type === 20) {
+      return "STANDARD";
+    }
+    if (type === 30) {
+      return "ADVANCED";
+    }
+    if (type === 40) {
+      return "ULTIMATE";
+    }
+    if (type === 50) {
+      return "ELITE";
     }
 
     return "Unknown";
