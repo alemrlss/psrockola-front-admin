@@ -67,10 +67,12 @@ function FormCreateMembershipDistributor({
                 value={formData.type}
                 onChange={handleChange}
               >
+                <MenuItem value={5}>25 Cuentas</MenuItem>
                 <MenuItem value={10}>50 Cuentas</MenuItem>
                 <MenuItem value={20}>100 Cuentas</MenuItem>
                 <MenuItem value={30}>150 Cuentas</MenuItem>
                 <MenuItem value={40}>200 Cuentas</MenuItem>
+                <MenuItem value={50}>500 Cuentas</MenuItem>
               </Select>
             </FormControl>
 

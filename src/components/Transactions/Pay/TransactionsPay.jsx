@@ -233,14 +233,15 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-            {t("transaction_pay_type_membership")} (Distribuidor){" "}
+            {t("transaction_pay_type_membership")} {" "}
+            {getTypeDistributorString(transaction.membershipDistributor?.type)} (Distribuidor)
           </TableCell>
           <TableCell
             sx={{
               textAlign: "center",
             }}
           >
-            {transaction.amount / 100}$
+            {transaction.amount/100}$
           </TableCell>
           <TableCell
             sx={{
@@ -360,6 +361,28 @@ function TransactionsPay() {
     }
     if (type === 30) {
       return "PREMIUM";
+    }
+
+    return "Unknown";
+  };
+  const getTypeDistributorString = (type) => {
+    if (type === 5) {
+      return "BEGINNER";
+    }
+    if (type === 10) {
+      return "STARTER";
+    }
+    if (type === 20) {
+      return "STANDARD";
+    }
+    if (type === 30) {
+      return "ADVANCED";
+    }
+    if (type === 40) {
+      return "ULTIMATE";
+    }
+    if (type === 50) {
+      return "ELITE";
     }
 
     return "Unknown";
