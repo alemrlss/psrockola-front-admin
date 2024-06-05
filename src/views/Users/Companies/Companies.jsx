@@ -7,8 +7,11 @@ import TableComponent from "../../../components/Users/Companies/Table";
 import InputsBox from "../../../components/Users/Companies/InputsBox";
 import TablePagination from "@mui/material/TablePagination";
 import ModalDelete from "../../../components/Users/Companies/ModalDelete";
+import { useSelector } from "react-redux";
 
 const Companies = () => {
+  const token = useSelector((state) => state.auth.token);
+
   // Data table states
   const [companies, setCompanies] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -47,6 +50,9 @@ const Companies = () => {
             state_User: stateCompany ? stateCompany : undefined,
             country: country ? country : undefined,
           },
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token as part of the headers in the request
+          },
         });
         setCompanies(response.data.data.users);
         setTotalCount(response.data.data.total);
@@ -69,7 +75,11 @@ const Companies = () => {
       setLoading(true);
       const newState = currentState;
 
-      await api.patch(`/user/change-state/${id}`, { state: newState });
+      await api.patch(
+        `/user/change-state/${id}`,
+        { state: newState },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       setCompanies((prevCompanies) =>
         prevCompanies.map((company) =>

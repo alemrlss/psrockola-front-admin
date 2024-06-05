@@ -7,8 +7,11 @@ import TableComponent from "../../../components/Users/Clients/Table";
 import InputsBox from "../../../components/Users/Clients/InputsBox";
 import TablePagination from "@mui/material/TablePagination";
 import ModalDelete from "../../../components/Users/Clients/ModalDelete";
+import { useSelector } from "react-redux";
 
 const Clients = () => {
+  const token = useSelector((state) => state.auth.token);
+
   // Data table states
   const [clients, setClients] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -47,6 +50,9 @@ const Clients = () => {
             state_User: stateCompany ? stateCompany : undefined,
             country: country ? country : undefined,
           },
+          headers: {
+            Authorization: `Bearer ${token}`, // Pasa el token como parte de los headers en la solicitud
+          },
         });
         setClients(response.data.data.users);
         setTotalCount(response.data.data.total);
@@ -69,8 +75,11 @@ const Clients = () => {
       setLoading(true);
       const newState = currentState;
 
-      await api.patch(`/user/change-state/${id}`, { state: newState });
-
+      await api.patch(
+        `/user/change-state/${id}`,
+        { state: newState },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setClients((prevCompanies) =>
         prevCompanies.map((company) =>
           company.id === id ? { ...company, state_User: newState } : company
