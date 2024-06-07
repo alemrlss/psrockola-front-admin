@@ -27,6 +27,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 function LanguageSelector() {
+  const token = useSelector((state) => state.auth.token);
   const { i18n, t } = useTranslation();
 
   const user = useSelector((state) => state.auth.user);
@@ -42,9 +43,17 @@ function LanguageSelector() {
     const selectedLanguage = event.target.value;
 
     try {
-      const response = await api.post(`user/change-language/${user.id}`, {
-        language: selectedLanguage,
-      });
+      const response = await api.post(
+        `user/change-language/${user.id}`,
+        {
+          language: selectedLanguage,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.status === 201) {
         // Mostrar notificación de éxito

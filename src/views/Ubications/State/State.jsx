@@ -18,8 +18,10 @@ import {
   Box,
 } from "@mui/material";
 import api from "../../../api/api";
+import { useSelector } from "react-redux";
 
 function State() {
+  const token = useSelector((state) => state.auth.token);
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [states, setStates] = useState([]);
@@ -55,7 +57,9 @@ function State() {
       try {
         setLoading(true);
         const response = await api.get(
-          `/state/${selectedCountry}?take=${rowsPerPage}&skip=${page * rowsPerPage}`,
+          `/state/${selectedCountry}?take=${rowsPerPage}&skip=${
+            page * rowsPerPage
+          }`,
           {
             // Agregado para búsqueda
             params: { name: searchTerm },
@@ -72,13 +76,15 @@ function State() {
     if (selectedCountry) {
       fetchStates();
     }
-  }, [selectedCountry, page, rowsPerPage,]); 
+  }, [selectedCountry, page, rowsPerPage]);
 
   const refreshStates = async () => {
     try {
       setLoading(true);
       const response = await api.get(
-        `/state/${selectedCountry}?take=${rowsPerPage}&skip=${page * rowsPerPage}`,
+        `/state/${selectedCountry}?take=${rowsPerPage}&skip=${
+          page * rowsPerPage
+        }`,
         {
           // Agregado para búsqueda
           params: { name: searchTerm },
@@ -139,10 +145,18 @@ function State() {
 
     try {
       setLoading(true);
-      const response = await api.post("/state", {
-        name: newState.name,
-        countryId: selectedCountry,
-      });
+      const response = await api.post(
+        "/state",
+        {
+          name: newState.name,
+          countryId: selectedCountry,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setStates((prevStates) => [response.data.data, ...prevStates]);
       setNewState({ name: "" });
       await refreshStates();
@@ -155,9 +169,17 @@ function State() {
   const handleEditState = async () => {
     try {
       setLoading(true);
-      await api.patch(`/state/${editingState.id}`, {
-        name: editingState.name,
-      });
+      await api.patch(
+        `/state/${editingState.id}`,
+        {
+          name: editingState.name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       await refreshStates();
       setLoading(false);
       handleEditModalClose();

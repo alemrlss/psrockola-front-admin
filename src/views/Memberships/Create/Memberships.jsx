@@ -4,8 +4,10 @@ import api from "../../../api/api";
 import MembershipCard from "../../../components/Membership/Create/MembershipCard";
 import FormCreateMembership from "../../../components/Membership/Create/FormCreateMembership";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 function CreateMemberships() {
+  const token = useSelector((state) => state.auth.token);
   const { t } = useTranslation();
   const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState({
@@ -38,7 +40,6 @@ function CreateMemberships() {
     setSuccess("");
 
     setFormData({ ...formData, [name]: value });
-
   };
 
   const handleSubmit = async (e) => {
@@ -64,7 +65,11 @@ function CreateMemberships() {
     };
 
     try {
-      await api.post("/membership/create", subscriptionData);
+      await api.post("/membership/create", subscriptionData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setFormData({
         countryId: null,
         name: "",

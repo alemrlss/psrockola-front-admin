@@ -16,8 +16,10 @@ import {
   TablePagination,
 } from "@mui/material";
 import api from "../../../api/api";
+import { useSelector } from "react-redux";
 
 function NestedSelects() {
+  const token = useSelector((state) => state.auth.token);
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -110,7 +112,11 @@ function NestedSelects() {
         stateId: parseInt(selectedState),
       };
 
-      await api.post("/city", newCityToSend);
+      await api.post("/city", newCityToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       // Actualizar la tabla haciendo una nueva solicitud al backend con la paginación actual
       await refreshCities();

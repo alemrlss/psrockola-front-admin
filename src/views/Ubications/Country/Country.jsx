@@ -15,8 +15,10 @@ import {
   Typography,
 } from "@mui/material";
 import api from "../../../api/api";
+import { useSelector } from "react-redux";
 
 function Country() {
+  const token = useSelector((state) => state.auth.token);
   const [countries, setCountries] = useState([]);
   const [newCountry, setNewCountry] = useState({
     isoCode: "",
@@ -122,7 +124,11 @@ function Country() {
 
     try {
       setLoading(true);
-      const response = await api.post("/country", newCountry);
+      const response = await api.post("/country", newCountry, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setCountries((prevCountries) => [...prevCountries, response.data.data]);
       setNewCountry({ isoCode: "", phoneCode: "", name: "" });
       setSuccess("Country created successfully");
@@ -142,7 +148,12 @@ function Country() {
       setLoading(true);
       const response = await api.patch(
         `/country/${editCountry.id}`,
-        editCountry
+        editCountry,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setCountries((prevCountries) =>
         prevCountries.map((country) =>

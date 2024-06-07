@@ -13,8 +13,10 @@ import MembershipCard from "../../../components/Membership/MembershipCard";
 import ModalEditMembership from "../../../components/Membership/ModalEditMembership";
 import ModalDeleteMembership from "../../../components/Membership/ModalDeleteMembership";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 function EditMemberships() {
+  const token = useSelector((state) => state.auth.token);
   const { t } = useTranslation();
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -79,7 +81,11 @@ function EditMemberships() {
         priceId: selectedMembership.price,
         membershipId: selectedMembership.id,
       };
-      const response = await api.patch(`/membership/update`, data);
+      const response = await api.patch(`/membership/update`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const updatedMembership = response.data.data;
       const updatedMemberships = memberships.map((membership) =>
