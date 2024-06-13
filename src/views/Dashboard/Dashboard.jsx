@@ -12,7 +12,6 @@ const Dashboard = () => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth.user);
 
-
   const [loading, setLoading] = useState(true);
   const [cardsInfo, setCardsInfo] = useState();
   const [graphicsInfo, setGraphicsInfo] = useState();
@@ -22,7 +21,11 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/dashboard");
+        const response = await api.get("/dashboard", {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        });
         const info = response.data.data;
 
         setCardsInfo(info.cardsInfo);
