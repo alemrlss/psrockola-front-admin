@@ -8,6 +8,7 @@ import InputsBox from "../../../components/Users/Companies/InputsBox";
 import TablePagination from "@mui/material/TablePagination";
 import ModalDelete from "../../../components/Users/Companies/ModalDelete";
 import { useSelector } from "react-redux";
+import ModalMembership from "../../../components/Users/Companies/ModalMembership";
 
 const Companies = () => {
   const token = useSelector((state) => state.auth.token);
@@ -28,6 +29,7 @@ const Companies = () => {
   // Modal states
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [deletedUserId, setDeletedUserId] = useState(null);
 
@@ -122,6 +124,16 @@ const Companies = () => {
     setIsDeleteModalOpen(false);
   };
 
+  const openMembershipModal = (company) => {
+    setSelectedCompany(company);
+    setIsMembershipModalOpen(true);
+  };
+
+  const closeMembershipModal = () => {
+    setSelectedCompany(null);
+    setIsMembershipModalOpen(false);
+  };
+
   // Pagination functions
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -166,6 +178,8 @@ const Companies = () => {
         error={error}
         setCompanies={setCompanies}
         openEditModalCompany={openEditModalCompany}
+        openMembershipModal={openMembershipModal}
+
       />
       <TablePagination
         component="div"
@@ -199,6 +213,17 @@ const Companies = () => {
           onClose={closeDeleteModal}
           selectedCompany={selectedCompany}
           onUserDeleted={setDeletedUserId}
+        />
+      </Modal>
+      <Modal
+        open={isMembershipModalOpen}
+        onClose={() => closeMembershipModal()}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalMembership
+          onClose={closeMembershipModal}
+          selectedCompany={selectedCompany}
         />
       </Modal>
     </section>

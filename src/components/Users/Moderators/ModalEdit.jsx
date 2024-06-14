@@ -18,8 +18,8 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
     email: selectedCompany.email,
     phone: selectedCompany.phone,
     address: selectedCompany.address,
-    city: selectedCompany.city.id,
-    state: selectedCompany.state.id,
+    city: selectedCompany.city?.id,
+    state: selectedCompany.state?.id,
     postalCode: selectedCompany.postalCode,
     country: selectedCompany.country.id,
     countryName: selectedCompany.country.name,
@@ -297,7 +297,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
               />
               <TextField
                 label="Estado"
-                value={selectedCompany.state.name}
+                value={selectedCompany.state?.name}
                 fullWidth
                 sx={{
                   mb: 2,
@@ -307,7 +307,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
               />
               <TextField
                 label="Ciudad"
-                value={selectedCompany.city.name}
+                value={selectedCompany.city?.name}
                 fullWidth
                 sx={{
                   mb: 2,

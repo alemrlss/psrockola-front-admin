@@ -17,8 +17,8 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
     email: selectedCompany.email,
     phone: selectedCompany.phone,
     address: selectedCompany.address,
-    city: selectedCompany.city.id,
-    state: selectedCompany.state.id,
+    state: selectedCompany.state?.id, // Lo colocamos asi por que es opcional
+    city: selectedCompany.city?.id, // Lo colocamos asi por que es opcional
     postalCode: selectedCompany.postalCode,
     country: selectedCompany.country.id,
     countryName: selectedCompany.country.name,
@@ -115,19 +115,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
   };
 
   const handleSaveChanges = async () => {
-    if (
-      !editedCompany.name ||
-      !editedCompany.email ||
-      !editedCompany.phone ||
-      !editedCompany.address ||
-      !editedCompany.country ||
-      !editedCompany.state ||
-      !editedCompany.postalCode ||
-      !editedCompany.city
-    ) {
-      setError("Por favor, complete todos los campos.");
-      return;
-    }
+   
     try {
       await api.patch(`/user/${selectedCompany.id}`, editedCompany);
       const updatedCompany = {
@@ -306,7 +294,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
               />
               <TextField
                 label="Estado"
-                value={selectedCompany.state.name}
+                value={selectedCompany.state?.name}
                 fullWidth
                 sx={{
                   mb: 2,
@@ -316,7 +304,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
               />
               <TextField
                 label="Ciudad"
-                value={selectedCompany.city.name}
+                value={selectedCompany.city?.name}
                 fullWidth
                 sx={{
                   mb: 2,
