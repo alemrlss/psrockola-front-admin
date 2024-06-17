@@ -12,10 +12,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VerticalAlignCenterIcon from "@mui/icons-material/VerticalAlignCenter";
 import IconButton from "@mui/material/IconButton";
-import { useTranslation } from "react-i18next"
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import { useTranslation } from "react-i18next";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import React, { useEffect } from "react";
-
 
 function TableComponent({
   handleToggleChange,
@@ -25,6 +24,7 @@ function TableComponent({
   error,
   setCompanies,
   openEditModalCompany,
+  openMembershipModal,
 }) {
   const { t } = useTranslation();
   const [orderBy, setOrderBy] = React.useState(""); // Estado para la columna por la cual se está ordenando
@@ -136,7 +136,7 @@ function TableComponent({
                   <IconButton onClick={() => openDeleteModal(company)}>
                     <DeleteIcon className="text-red-500" />
                   </IconButton>
-                  <IconButton onClick={() => openDeleteModal(company)}>
+                  <IconButton onClick={() => openMembershipModal(company)}>
                     <VerifiedUserIcon className="text-yellow-500" />
                   </IconButton>
                 </TableCell>

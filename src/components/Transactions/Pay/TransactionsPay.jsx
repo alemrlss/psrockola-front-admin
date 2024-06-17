@@ -350,6 +350,96 @@ function TransactionsPay() {
         </TableRow>
       );
     }
+
+    
+    if (transaction.type === "gift_company") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+           Regalo PSROCKOlA (Company)
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.amount}$
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              onClick={() => handleOpenModal(transaction.company)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.company.name}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      );
+    }
+    if (transaction.type === "gift_distributor") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+          Regalo PSROCKOLA (Distribuidor)
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {transaction.amount}$
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              onClick={() => handleOpenModal(transaction.distributor)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              {transaction.distributor.name}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+
   };
 
   const getTypeString = (type) => {

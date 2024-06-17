@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import api from "../../../api/api";
 import TableComponent from "../../../components/Users/Distributors/Table";
 import TablePagination from "@mui/material/TablePagination";
+import ModalMembership from "../../../components/Users/Distributors/ModalMembershipDistributor";
 
 const Distributors = () => {
   // Data table states
@@ -22,7 +23,9 @@ const Distributors = () => {
   // Modal states
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
+  const [selectedDistributor, setSelectedDistributor] = useState(null);
+
   const [deletedUserId, setDeletedUserId] = useState(null);
 
   // Pagination states
@@ -94,18 +97,28 @@ const Distributors = () => {
   };
 
   const closeEditModal = () => {
-    setSelectedCompany(null);
+    setSelectedDistributor(null);
     setIsEditModalOpen(false);
   };
 
   const openDeleteModal = (company) => {
-    setSelectedCompany(company);
+    setSelectedDistributor(company);
     setIsDeleteModalOpen(true);
   };
 
   const closeDeleteModal = () => {
-    setSelectedCompany(null);
+    setSelectedDistributor(null);
     setIsDeleteModalOpen(false);
+  };
+
+  const openMembershipModal = (company) => {
+    setSelectedDistributor(company);
+    setIsMembershipModalOpen(true);
+  };
+
+  const closeMembershipModal = () => {
+    setSelectedDistributor(null);
+    setIsMembershipModalOpen(false);
   };
 
   // Pagination functions
@@ -121,7 +134,7 @@ const Distributors = () => {
   const fetchSelectedCompanyDetails = async (companyId) => {
     try {
       const response = await api.get(`/user/${companyId}`);
-      setSelectedCompany(response.data.data);
+      setSelectedDistributor(response.data.data);
     } catch (error) {
       console.error("Error fetching selected company details:", error);
     }
@@ -146,6 +159,7 @@ const Distributors = () => {
         error={error}
         setCompanies={setDistributors}
         openEditModalCompany={openEditModalCompany}
+        openMembershipModal={openMembershipModal}
       />
       <TablePagination
         component="div"
@@ -157,6 +171,18 @@ const Distributors = () => {
         rowsPerPageOptions={[5, 10]}
         labelRowsPerPage={t("table_row_per_page")}
       />
+
+      <Modal
+        open={isMembershipModalOpen}
+        onClose={() => close()}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalMembership
+          onClose={closeMembershipModal}
+          selectedDistributor={selectedDistributor}
+        />
+      </Modal>
     </section>
   );
 };

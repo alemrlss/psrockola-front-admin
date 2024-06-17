@@ -1,15 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import { useEffect, useState } from "react";
+import { MenuItem, Select } from "@mui/material";
 import api from "../../../api/api";
 
-function ModalMembership({ onClose, selectedCompany }) {
-  const [countryId, setCountryId] = useState(selectedCompany.country.id);
+function ModalMembership({ onClose, selectedDistributor }) {
+  const [countryId, setCountryId] = useState(selectedDistributor.country.id);
   const [error, setError] = useState("");
   const [memberships, setMemberships] = useState([]);
   const [selectedMembership, setSelectedMembership] = useState("");
@@ -18,7 +17,7 @@ function ModalMembership({ onClose, selectedCompany }) {
     // Fetch memberships for the selected company's country
     const fetchMemberships = async () => {
       try {
-        const response = await api.get(`/membership/${countryId}`);
+        const response = await api.get(`distributor-membership/${countryId}`);
         setMemberships(response.data);
       } catch (error) {
         console.error(error);
@@ -34,13 +33,13 @@ function ModalMembership({ onClose, selectedCompany }) {
   const handleConfirm = async () => {
     // Send the selected membership to the backend to assign it to the company
     try {
-      await api.post(`/membership/gift/${selectedCompany.id}`, {
+      await api.post(`/distributor-membership/gift/${selectedDistributor.id}`, {
         idMembership: selectedMembership,
       });
       onClose();
     } catch (error) {
-      if (error.response.data.message === "USER_HAS_ACTIVE_MEMBERSHIP") {
-        setError("The user already has an active membership");
+      if (error.response.data.message === "DISTRIBUTOR_HAS_ACTIVE_MEMBERSHIP") {
+        setError("The distributor already has an active membership");
         return;
       }
 
@@ -68,10 +67,9 @@ function ModalMembership({ onClose, selectedCompany }) {
           textAlign: "center",
         }}
       >
-        Elige la membresía que le vas a asignar a la empresa
+        This modal distributor membership{" "}
       </Typography>
-
-      {selectedCompany.activeMembership ? (
+      {selectedDistributor.activeMembership ? (
         <>
           <Typography
             variant="h6"
@@ -82,7 +80,7 @@ function ModalMembership({ onClose, selectedCompany }) {
             }}
           >
             La empresa tiene la membresía:{" "}
-            {selectedCompany.activeMembership.name}
+            {selectedDistributor.activeMembership.name}
           </Typography>
           <Select
             value={selectedMembership}
@@ -120,7 +118,6 @@ function ModalMembership({ onClose, selectedCompany }) {
           ))}
         </Select>
       )}
-
       <Typography
         variant="h6"
         gutterBottom
@@ -128,7 +125,7 @@ function ModalMembership({ onClose, selectedCompany }) {
           textAlign: "center",
         }}
       >
-        La empresa seleccionada es: {selectedCompany.name}
+        La empresa seleccionada es: {selectedDistributor.name}
       </Typography>
       {error && (
         <Typography
@@ -150,12 +147,12 @@ function ModalMembership({ onClose, selectedCompany }) {
         <Button
           variant="contained"
           color="primary"
+          disabled={selectedDistributor.activeMembership}
           onClick={handleConfirm}
-          disabled={selectedCompany.activeMembership}
         >
           Confirm
         </Button>
-      </Box>
+      </Box>{" "}
     </Box>
   );
 }
