@@ -6,12 +6,19 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { MenuItem, Select } from "@mui/material";
 import api from "../../../api/api";
+import { formatDate } from "../../../utils/formatDate";
 
 function ModalMembership({ onClose, selectedDistributor }) {
   const [countryId, setCountryId] = useState(selectedDistributor.country.id);
   const [error, setError] = useState("");
   const [memberships, setMemberships] = useState([]);
   const [selectedMembership, setSelectedMembership] = useState("");
+  const [expirationDateMembership, setExpirationDateMembership] = useState(
+    selectedDistributor.membershipExpirationDate
+  );
+
+  //constante para ver si la membresia de el distribuidor esta vencida
+  const isExpired = expirationDateMembership < new Date().toISOString();
 
   useEffect(() => {
     // Fetch memberships for the selected company's country
@@ -76,18 +83,31 @@ function ModalMembership({ onClose, selectedDistributor }) {
             gutterBottom
             sx={{
               textAlign: "center",
-              color: "red",
+              color: isExpired ? "red" : "green",
             }}
           >
-            La empresa tiene la membresía:{" "}
+            El Distributor tiene la membresía:{" "}
             {selectedDistributor.activeMembership.name}
           </Typography>
+
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              textAlign: "center",
+              color: isExpired ? "red" : "green",
+              fontSize: "10px",
+            }}
+          >
+            La membresía vence el: {formatDate(expirationDateMembership)}
+          </Typography>
+
           <Select
             value={selectedMembership}
             onChange={handleMembershipChange}
             displayEmpty
             fullWidth
-            disabled
+            disabled={!isExpired}
           >
             <MenuItem value="" disabled>
               Select a membership
@@ -147,8 +167,8 @@ function ModalMembership({ onClose, selectedDistributor }) {
         <Button
           variant="contained"
           color="primary"
-          disabled={selectedDistributor.activeMembership}
           onClick={handleConfirm}
+          disabled={!selectedMembership}
         >
           Confirm
         </Button>
