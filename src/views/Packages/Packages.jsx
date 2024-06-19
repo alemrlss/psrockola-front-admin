@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -17,8 +17,23 @@ function Packages() {
   const [amount, setAmount] = useState("");
   const [price, setPrice] = useState("");
   const [type, setType] = useState("");
+  const [countryId, setCountryId] = useState(""); // Estado para el país seleccionado
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // Nuevo estado para el mensaje de éxito
+  const [successMessage, setSuccessMessage] = useState(""); // Estado para el mensaje de éxito
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get("/country/selects");
+        const countries = response.data;
+        setCountries(countries.data);
+      } catch (error) {
+        console.error("Error al obtener países:", error);
+      }
+    };
+    fetchCountries();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,7 +41,6 @@ function Packages() {
     // Convertir el precio a centavos
     const priceInCents = parseFloat(price) * 100;
 
-    console.log(type);
     try {
       // Realizar la solicitud al backend para crear el Package
       await api.post("package-rockobits", {
@@ -35,6 +49,7 @@ function Packages() {
         amount: parseFloat(amount),
         price: priceInCents,
         type,
+        countryId, // Agregar el countryId en la solicitud
       });
 
       // Limpiar los campos después de crear el Package
@@ -42,6 +57,7 @@ function Packages() {
       setType("");
       setAmount("");
       setPrice("");
+      setCountryId(""); // Limpiar la selección del país
       setErrorMessage("");
       setSuccessMessage("Package created successfully"); // Establecer el mensaje de éxito
 
@@ -94,24 +110,41 @@ function Packages() {
             required
             margin="normal"
           />
-<FormControl fullWidth>
-    <InputLabel id="type-label">Type</InputLabel>
-    <Select
-        labelId="type-label"
-        id="type"
-        name="type"
-        label="Type"
-        onChange={(e) => setType(e.target.value)}
-        value={type}
-    >
-        <MenuItem value="">
-            <em>None</em> 
-        </MenuItem>
-        <MenuItem value="companies">Companies</MenuItem>
-        <MenuItem value="distributors">Distributors</MenuItem>
-    </Select>
-</FormControl>
-
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="type-label">Type</InputLabel>
+            <Select
+              labelId="type-label"
+              id="type"
+              name="type"
+              label="Type"
+              onChange={(e) => setType(e.target.value)}
+              value={type}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="companies">Companies</MenuItem>
+              <MenuItem value="distributors">Distributors</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="country-label">Country</InputLabel>
+            <Select
+              labelId="country-label"
+              id="country"
+              name="country"
+              label="Country"
+              onChange={(e) => setCountryId(e.target.value)}
+              value={countryId}
+              required
+            >
+              {countries.map((country) => (
+                <MenuItem key={country.id} value={country.id}>
+                  {country.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           {errorMessage && (
             <Typography variant="body2" color="error" gutterBottom>
