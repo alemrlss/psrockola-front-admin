@@ -10,7 +10,7 @@ export default function ProtectedRoute() {
   }
   return (
     <>
-      <Outlet />
+      <Outlet />z
     </>
   );
 }

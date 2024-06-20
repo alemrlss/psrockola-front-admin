@@ -111,7 +111,6 @@ function ModalMembership({ onClose, selectedCompany }) {
             onChange={handleMembershipChange}
             displayEmpty
             fullWidth
-            disabled={!isExpired}
           >
             <MenuItem value="" disabled>
               Select a membership
