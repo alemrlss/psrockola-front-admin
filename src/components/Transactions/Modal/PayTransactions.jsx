@@ -216,7 +216,8 @@ function PayTransactions({ selectedCompany }) {
               textAlign: "center",
             }}
           >
-            Regalo PSROCKOLA
+            Regalo PSROCKOLA{" "}
+            {getTypeDistributorString(transaction.membershipDistributor.type)}{" "}
           </TableCell>
           <TableCell
             sx={{
@@ -225,7 +226,6 @@ function PayTransactions({ selectedCompany }) {
           >
             {transaction.amount}$
           </TableCell>
-         
         </TableRow>
       );
     }
@@ -245,7 +245,8 @@ function PayTransactions({ selectedCompany }) {
               textAlign: "center",
             }}
           >
-           Regalo PSROCKOlA (Company)
+            Regalo PSROCKOlA (Company){" "}
+            {getTypeString(transaction.membership.type)}
           </TableCell>
           <TableCell
             sx={{
@@ -254,7 +255,6 @@ function PayTransactions({ selectedCompany }) {
           >
             {transaction.amount}$
           </TableCell>
-          
         </TableRow>
       );
     }

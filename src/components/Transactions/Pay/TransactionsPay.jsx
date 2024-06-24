@@ -233,15 +233,16 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-            {t("transaction_pay_type_membership")} {" "}
-            {getTypeDistributorString(transaction.membershipDistributor?.type)} (Distribuidor)
+            {t("transaction_pay_type_membership")}{" "}
+            {getTypeDistributorString(transaction.membershipDistributor?.type)}{" "}
+            (Distribuidor)
           </TableCell>
           <TableCell
             sx={{
               textAlign: "center",
             }}
           >
-            {transaction.amount/100}$
+            {transaction.amount / 100}$
           </TableCell>
           <TableCell
             sx={{
@@ -351,7 +352,6 @@ function TransactionsPay() {
       );
     }
 
-    
     if (transaction.type === "gift_company") {
       return (
         <TableRow key={transaction.id}>
@@ -367,7 +367,7 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-           Regalo PSROCKOlA (Company)
+            Regalo PSROCKOlA (Company)    {getTypeString(transaction.membership.type)}
           </TableCell>
           <TableCell
             sx={{
@@ -410,7 +410,8 @@ function TransactionsPay() {
               textAlign: "center",
             }}
           >
-          Regalo PSROCKOLA (Distribuidor)
+            Regalo PSROCKOLA (Distribuidor){" "}
+            {getTypeDistributorString(transaction.membershipDistributor?.type)}
           </TableCell>
           <TableCell
             sx={{
@@ -438,8 +439,6 @@ function TransactionsPay() {
         </TableRow>
       );
     }
-
-
   };
 
   const getTypeString = (type) => {
