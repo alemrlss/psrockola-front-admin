@@ -5,6 +5,7 @@ import api from "../../../api/api";
 import TableComponent from "../../../components/Users/Distributors/Table";
 import TablePagination from "@mui/material/TablePagination";
 import ModalMembership from "../../../components/Users/Distributors/ModalMembershipDistributor";
+import ModalRockobitsDistributor from "../../../components/Users/Distributors/ModalRockobitsDistributor";
 
 const Distributors = () => {
   // Data table states
@@ -24,6 +25,7 @@ const Distributors = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
+  const [isRockobitsModalOpen, setIsRockobitsModalOpen] = useState(false);
   const [selectedDistributor, setSelectedDistributor] = useState(null);
 
   const [deletedUserId, setDeletedUserId] = useState(null);
@@ -121,6 +123,16 @@ const Distributors = () => {
     setIsMembershipModalOpen(false);
   };
 
+  const openRockobitsModal = (company) => {
+    setSelectedDistributor(company);
+    setIsRockobitsModalOpen(true);
+  };
+
+  const closeRockobitsModal = () => {
+    setSelectedDistributor(null);
+    setIsRockobitsModalOpen(false);
+  };
+
   // Pagination functions
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -160,6 +172,7 @@ const Distributors = () => {
         setCompanies={setDistributors}
         openEditModalCompany={openEditModalCompany}
         openMembershipModal={openMembershipModal}
+        openRockobitsModal={openRockobitsModal}
       />
       <TablePagination
         component="div"
@@ -180,6 +193,17 @@ const Distributors = () => {
       >
         <ModalMembership
           onClose={closeMembershipModal}
+          selectedDistributor={selectedDistributor}
+        />
+      </Modal>
+      <Modal
+        open={isRockobitsModalOpen}
+        onClose={closeRockobitsModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalRockobitsDistributor
+          onClose={closeRockobitsModal}
           selectedDistributor={selectedDistributor}
         />
       </Modal>

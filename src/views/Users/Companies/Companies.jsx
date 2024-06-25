@@ -9,6 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import ModalDelete from "../../../components/Users/Companies/ModalDelete";
 import { useSelector } from "react-redux";
 import ModalMembership from "../../../components/Users/Companies/ModalMembership";
+import ModalRockobits from "../../../components/Users/Companies/ModalRockobits";
 
 const Companies = () => {
   const token = useSelector((state) => state.auth.token);
@@ -30,6 +31,7 @@ const Companies = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
+  const [isRockobitsModalOpen, setIsRockobitsModalOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [deletedUserId, setDeletedUserId] = useState(null);
 
@@ -134,6 +136,16 @@ const Companies = () => {
     setIsMembershipModalOpen(false);
   };
 
+  const openRockobitsModal = (company) => {
+    setSelectedCompany(company);
+    setIsRockobitsModalOpen(true);
+  };
+
+  const closeRockobitsModal = () => {
+    setSelectedCompany(null);
+    setIsRockobitsModalOpen(false);
+  };
+
   // Pagination functions
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -179,7 +191,7 @@ const Companies = () => {
         setCompanies={setCompanies}
         openEditModalCompany={openEditModalCompany}
         openMembershipModal={openMembershipModal}
-
+        openRockobitsModal={openRockobitsModal}
       />
       <TablePagination
         component="div"
@@ -223,6 +235,17 @@ const Companies = () => {
       >
         <ModalMembership
           onClose={closeMembershipModal}
+          selectedCompany={selectedCompany}
+        />
+      </Modal>
+      <Modal
+        open={isRockobitsModalOpen}
+        onClose={() => closeRockobitsModal()}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalRockobits
+          onClose={closeRockobitsModal}
           selectedCompany={selectedCompany}
         />
       </Modal>
