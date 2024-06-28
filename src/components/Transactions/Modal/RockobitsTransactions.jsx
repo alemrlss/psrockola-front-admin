@@ -392,6 +392,81 @@ function RockobitsTransactions({ selectedCompany }) {
         </TableRow>
       );
     }
+
+    if (transaction.type === "gift_company") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            REGALO PSROCKOLA
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+              color: "green",
+              fontWeight: "bold",
+              fontSize: "20px",
+            }}
+          >
+            {transaction.amount}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            PSROCKOLA
+          </TableCell>
+        </TableRow>
+      );
+    }
+    if (transaction.type === "gift_distributor") {
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {formatDate(transaction.createdAt)}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            REGALO PSROCKOLA
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+              color: "green",
+              fontWeight: "bold",
+              fontSize: "20px",
+            }}
+          >
+            {transaction.amount}
+          </TableCell>
+          <TableCell
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            PSROCKOLA
+          </TableCell>
+        </TableRow>
+      );
+    } 
   };
 
   const handleOpenModal = (voucher) => {
