@@ -1,6 +1,6 @@
+import React from "react";
 import Grid from "@mui/material/Grid";
-import { Doughnut } from "react-chartjs-2";
-import { Bar } from "react-chartjs-2";
+import { Doughnut, Bar } from "react-chartjs-2";
 import {
   Chart,
   ArcElement,
@@ -10,11 +10,22 @@ import {
   LinearScale,
   BarElement,
 } from "chart.js";
+import { useState } from "react";
 
-Chart.register(ArcElement, Tooltip, Legend);
-Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+Chart.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement
+);
 
 function Graphics({ data }) {
+  const [transactionsLast6Months, setTransactionsLast6Months] = useState(
+    data.transactionsByMonth
+  );
+
   const chartDataSet = {
     labels: ["Basico", "Plus", "Premium"],
     datasets: [
@@ -25,44 +36,17 @@ function Graphics({ data }) {
       },
     ],
   };
- 
-
 
   const barData = {
-    labels: ["Prueba"],
-
+    labels: transactionsLast6Months.map(
+      (item) => `${item.month} - ${item.year}`
+    ),
     datasets: [
       {
-        label: "Ventas Rockobits",
-        data: [1],
-        backgroundColor: [
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-          "rgba(173, 136, 241, 0.8)",
-        ],
-        borderColor: [
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-          "rgba(173, 136, 241, 1)",
-        ],
+        label: "Sales per month rockobits ($)",
+        data: transactionsLast6Months.map((item) => item.totalSales / 100),
+        backgroundColor: "rgba(173, 136, 241, 0.8)",
+        borderColor: "rgba(173, 136, 241, 1)",
         borderWidth: 1,
       },
     ],
@@ -77,6 +61,15 @@ function Graphics({ data }) {
           height={200}
           options={{
             maintainAspectRatio: false, // Esto permite al contenedor ajustarse al tamaño disponible
+            plugins: {
+              legend: { display: true, position: "top" },
+              tooltip: { enabled: true, padding: 16 },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
           }}
         />
       </Grid>
