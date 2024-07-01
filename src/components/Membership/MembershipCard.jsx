@@ -4,7 +4,7 @@ import getBenefits from "../../utils/getBenefits";
 
 function MembershipCard({ membership, onEditClick, onDeleteClick }) {
   return (
-    <Grid item xs={3}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
       <Box border="2px solid #555CB3" p={3} m={2} borderRadius={1}>
         <Typography variant="h6" gutterBottom>
           {membership.name}
@@ -36,7 +36,7 @@ function MembershipCard({ membership, onEditClick, onDeleteClick }) {
               padding: "8px 16px",
               transition: "all 0.3s",
               "&:hover": {
-                backgroundColor: "#1976d2", // Cambia el color de fondo en hover
+                backgroundColor: "#1976d2",
               },
               marginBottom: 1,
             }}
@@ -54,7 +54,7 @@ function MembershipCard({ membership, onEditClick, onDeleteClick }) {
               padding: "8px 16px",
               transition: "all 0.3s",
               "&:hover": {
-                backgroundColor: "#c62828", // Cambia el color de fondo en hover
+                backgroundColor: "#c62828",
               },
             }}
           >

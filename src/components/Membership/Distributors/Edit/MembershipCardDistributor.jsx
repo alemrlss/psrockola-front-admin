@@ -4,7 +4,7 @@ import getBenefitsMembership from "../../../../utils/getBenefitsMembershipDistri
 
 function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
   return (
-    <Grid item xs={3}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
       <Box border="2px solid #555CB3" p={3} m={2} borderRadius={1}>
         <Typography variant="h6" gutterBottom>
           {membership.name}
@@ -12,15 +12,9 @@ function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
         <Typography variant="body1" color="textSecondary" gutterBottom>
           Precio: {membership.amount / 100} {membership.currency}
         </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          gutterBottom
-        ></Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
           Tipo: <b>{membership.type}</b>
         </Typography>
-
         <Typography variant="body2" color="textSecondary" gutterBottom>
           <b> Cuentas:</b> {getBenefitsMembership(membership.type).accounts}
         </Typography>
@@ -48,7 +42,6 @@ function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
           >
             Editar
           </Button>
-
           <Button
             variant="contained"
             color="error"
