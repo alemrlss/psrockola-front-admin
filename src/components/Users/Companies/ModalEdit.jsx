@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import api from "../../../api/api";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
   const { t } = useTranslation();
@@ -17,8 +19,8 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
     email: selectedCompany.email,
     phone: selectedCompany.phone,
     address: selectedCompany.address,
-    state: selectedCompany.state?.id, // Lo colocamos asi por que es opcional
-    city: selectedCompany.city?.id, // Lo colocamos asi por que es opcional
+    state: selectedCompany.state?.id,
+    city: selectedCompany.city?.id,
     postalCode: selectedCompany.postalCode,
     country: selectedCompany.country.id,
     countryName: selectedCompany.country.name,
@@ -27,10 +29,12 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
 
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [countries, setCountries] = useState([]);
-
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [error, setError] = useState(null);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -57,7 +61,6 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
       }
     };
 
-    // Se ejecuta solo si se está editando la ubicación y hay un país seleccionado
     if (isEditingLocation && editedCompany.country) {
       fetchStates();
     }
@@ -67,7 +70,6 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
     const fetchCities = async () => {
       setCities([]);
 
-      // Se ejecuta solo si se está editando la ubicación y hay un estado seleccionado
       if (isEditingLocation && editedCompany.state) {
         try {
           const response = await api.get(`/city/${editedCompany.state}`);
@@ -84,7 +86,6 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
   }, [isEditingLocation, editedCompany.state]);
 
   const handleEditLocation = () => {
-    // Al hacer clic en "Editar Ubicación", cambia el estado para mostrar los selectores
     setIsEditingLocation(true);
   };
 
@@ -96,7 +97,6 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
       [field]: value,
     }));
 
-    // Si el campo cambiado es el país, restablecer estado y ciudad
     if (field === "country") {
       setEditedCompany((prevEditedCompany) => ({
         ...prevEditedCompany,
@@ -105,7 +105,6 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
       }));
     }
 
-    // Si el campo cambiado es el estado, restablecer ciudad
     if (field === "state") {
       setEditedCompany((prevEditedCompany) => ({
         ...prevEditedCompany,
@@ -115,7 +114,6 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
   };
 
   const handleSaveChanges = async () => {
-   
     try {
       await api.patch(`/user/${selectedCompany.id}`, editedCompany);
       const updatedCompany = {
@@ -145,7 +143,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 600,
+        width: isSmallScreen ? '90%' : 600,
         bgcolor: "white",
         boxShadow: 0,
         p: 4,
@@ -154,7 +152,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: isSmallScreen ? "column" : "row",
           alignItems: "center",
         }}
       >
@@ -290,7 +288,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
                   mb: 2,
                 }}
                 size="small"
-                disabled // Esto deshabilita la edición
+                disabled
               />
               <TextField
                 label="Estado"
@@ -300,7 +298,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
                   mb: 2,
                 }}
                 size="small"
-                disabled // Esto deshabilita la edición
+                disabled
               />
               <TextField
                 label="Ciudad"
@@ -310,7 +308,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
                   mb: 2,
                 }}
                 size="small"
-                disabled // Esto deshabilita la edición
+                disabled
               />
               <Button onClick={handleEditLocation}>Editar Localidad</Button>
             </div>

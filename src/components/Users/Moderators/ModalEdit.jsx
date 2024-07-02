@@ -9,9 +9,13 @@ import Box from "@mui/material/Box";
 import api from "../../../api/api";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [editedCompany, setEditedCompany] = useState({
     name: selectedCompany.name,
@@ -156,7 +160,7 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 600,
+        width: isSmallScreen ? '90%' : 600,
         bgcolor: "white",
         boxShadow: 0,
         p: 4,
@@ -165,21 +169,21 @@ function ModalEdit({ selectedCompany, updateLocalCompany, onClose }) {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: isSmallScreen ? "column" : "row",
           alignItems: "center",
         }}
       >
         <Typography
           variant="h6"
           component="div"
-          sx={{ color: "#555CB3", fontWeight: "bold" }}
+          sx={{ color: "#555CB3", fontWeight: "bold", flexGrow: 1 }}
         >
           {t("edit_moderator_profile")}
         </Typography>
         <Avatar
           alt={selectedCompany.name}
           src={selectedCompany.profilePicture}
-          sx={{ width: 64, height: 64, my: 2, mx: "auto" }}
+          sx={{ width: 64, height: 64, my: 2, mx: isSmallScreen ? "auto" : 0 }}
         />
       </Box>
       <Grid container spacing={2}>

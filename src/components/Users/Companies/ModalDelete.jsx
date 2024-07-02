@@ -4,8 +4,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import api from "../../../api/api";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const handleDelete = async () => {
     try {
       // Realiza la llamada a la API para eliminar el usuario
@@ -27,7 +32,7 @@ function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 500,
+        width: isSmallScreen ? '90%' : 500,
         bgcolor: "white",
         boxShadow: 0,
         p: 4,
@@ -45,7 +50,7 @@ function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
         Are you sure you want to delete the user {selectedCompany.name}?
       </Typography>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2, flexDirection: isSmallScreen ? 'column' : 'row' }}>
         <Button
           onClick={onClose}
           sx={{
@@ -54,7 +59,8 @@ function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
             fontWeight: "bold",
             borderRadius: "50px",
             px: 4,
-            mr: 2,
+            mb: isSmallScreen ? 2 : 0,
+            mr: isSmallScreen ? 0 : 2,
             "&:hover": {
               bgcolor: "#00BF63",
             },

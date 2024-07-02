@@ -4,8 +4,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import api from "../../../api/api";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const handleDelete = async () => {
     try {
       // Realiza la llamada a la API para eliminar el usuario
@@ -25,25 +30,25 @@ function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 500,
+        width: isSmallScreen ? '90%' : 500,
         bgcolor: "white",
         boxShadow: 0,
-        p: 4,
+        p: isSmallScreen ? 2 : 4,
       }}
     >
       <Typography
         variant="h6"
         component="div"
-        sx={{ color: "#555CB3", fontWeight: "bold" }}
+        sx={{ color: "#555CB3", fontWeight: "bold", textAlign: isSmallScreen ? 'center' : 'left' }}
       >
         Delete Company Profile
       </Typography>
 
-      <Typography sx={{ mt: 2 }}>
+      <Typography sx={{ mt: 2, textAlign: isSmallScreen ? 'center' : 'left' }}>
         Are you sure you want to delete the user {selectedCompany.name}?
       </Typography>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: isSmallScreen ? 'column' : 'row', justifyContent: "center", alignItems: 'center', mt: 2 }}>
         <Button
           onClick={onClose}
           sx={{
@@ -51,8 +56,10 @@ function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
             color: "white",
             fontWeight: "bold",
             borderRadius: "50px",
-            px: 4,
-            mr: 2,
+            px: isSmallScreen ? 2 : 4,
+            py: isSmallScreen ? 1 : 0,
+            mb: isSmallScreen ? 2 : 0,
+            mr: isSmallScreen ? 0 : 2,
             "&:hover": {
               bgcolor: "#00BF63",
             },
@@ -68,7 +75,8 @@ function ModalDelete({ onClose, selectedCompany, onUserDeleted }) {
             color: "white",
             fontWeight: "bold",
             borderRadius: "50px",
-            px: 4,
+            px: isSmallScreen ? 2 : 4,
+            py: isSmallScreen ? 1 : 0,
             "&:hover": {
               bgcolor: "#FF4444",
             },
