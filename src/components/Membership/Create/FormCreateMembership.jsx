@@ -9,6 +9,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function FormCreateMembership({
   countries,
@@ -16,6 +17,8 @@ function FormCreateMembership({
   handleChange,
   handleSubmit,
 }) {
+  const { t } = useTranslation();
+
   return (
     <Grid item xs={12} md={6}>
       <Card
@@ -30,7 +33,7 @@ function FormCreateMembership({
                 labelId="countryId-label"
                 id="countryId"
                 name="countryId"
-                label="Country"
+                label={t("view_membership_create_country")}
                 value={formData.countryId}
                 onChange={handleChange}
               >
@@ -43,12 +46,15 @@ function FormCreateMembership({
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="interval-label">Periodo de Membresía</InputLabel>
+              <InputLabel id="interval-label">
+                {" "}
+                {t("view_membership_create_period")}
+              </InputLabel>
               <Select
                 labelId="interval-label"
                 id="interval"
                 name="interval"
-                label="Periodo de Membresía"
+                label={t("view_membership_create_period")}
                 value={formData.interval}
                 onChange={handleChange}
               >
@@ -58,12 +64,14 @@ function FormCreateMembership({
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="type-label">Tipo de Membresía</InputLabel>
+              <InputLabel id="type-label">
+                {t("view_membership_create_type")}
+              </InputLabel>
               <Select
                 labelId="type-label"
                 id="type"
                 name="type"
-                label="Tipo de Membresía"
+                label={t("view_membership_create_type")}
                 value={formData.type}
                 onChange={handleChange}
               >
@@ -74,7 +82,7 @@ function FormCreateMembership({
             </FormControl>
 
             <TextField
-              label="Nombre"
+              label={t("view_membership_create_name")}
               id="name"
               name="name"
               fullWidth
@@ -83,7 +91,7 @@ function FormCreateMembership({
             />
 
             <TextField
-              label="Amount"
+              label={t("view_membership_create_amount")}
               id="amount"
               name="amount"
               fullWidth
@@ -93,12 +101,14 @@ function FormCreateMembership({
             />
 
             <FormControl fullWidth>
-              <InputLabel id="currency-label">Currency</InputLabel>
+              <InputLabel id="currency-label">
+                {t("view_membership_create_currency")}
+              </InputLabel>
               <Select
                 labelId="currency-label"
                 id="currency"
                 name="currency"
-                label="Currency"
+                label={t("view_membership_create_currency")}
                 value={formData.currency}
                 onChange={handleChange}
               >
@@ -108,7 +118,7 @@ function FormCreateMembership({
             </FormControl>
 
             <Button type="submit" variant="contained" fullWidth>
-              Crear Membresía
+              {t("view_membership_create_btn")}
             </Button>
           </form>
         </CardContent>

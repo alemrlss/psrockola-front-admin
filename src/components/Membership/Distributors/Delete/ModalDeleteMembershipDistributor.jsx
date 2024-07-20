@@ -7,30 +7,34 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function ModalDeleteMembershipDistributor({
   isModalOpen,
   handleCloseModal,
-  selectedMembership,
-  setSelectedMembership,
-  handleDeleteMembership
+  handleDeleteMembership,
 }) {
+  const { t } = useTranslation();
   return (
     <Dialog open={isModalOpen} onClose={handleCloseModal} sx={{ my: 4 }}>
       <Box>
-        <DialogTitle>Delete Membership</DialogTitle>
+        <DialogTitle>{t("view_membership_modaldelete_title")}</DialogTitle>
       </Box>
       <DialogContent>
         <Typography variant="body1" color="error" gutterBottom>
-          Are you sure you want to delete this membership?
+          {t("view_membership_modaldelete_message")}{" "}
         </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseModal} color="primary">
-          Cancel
+          {t("view_membership_modaldelete_cancel")}{" "}
         </Button>
-        <Button onClick={handleDeleteMembership} color="primary" variant="contained">
-          Delete
+        <Button
+          onClick={handleDeleteMembership}
+          color="primary"
+          variant="contained"
+        >
+          {t("view_membership_modaldelete_delete")}{" "}
         </Button>
       </DialogActions>
     </Dialog>

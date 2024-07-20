@@ -116,17 +116,19 @@ function EditMemberships() {
   return (
     <div>
       <FormControl fullWidth>
-        <InputLabel id="country-label">Select Country</InputLabel>
+        <InputLabel id="country-label">
+          {t("view_membership_edit_select_country")}
+        </InputLabel>
         <Select
           labelId="country-label"
           id="country-select"
-          label="Select Country"
+          label={t("view_membership_edit_select_country")}
           value={selectedCountry}
           onChange={handleCountryChange}
           style={{ minWidth: "200px" }}
         >
           <MenuItem value="" disabled>
-            Select a country
+            {t("view_membership_edit_select_country")}
           </MenuItem>
           {countries.map((country) => (
             <MenuItem key={country.id} value={country.id}>
@@ -176,7 +178,7 @@ function EditMemberships() {
       </Grid>
       {memberships.length === 0 && (
         <p className="text-4xl my-10 text-[#555CB3] font">
-          No memberships available
+          {t("view_membership_edit_no_membership")}
         </p>
       )}
 

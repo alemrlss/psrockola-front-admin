@@ -9,6 +9,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function FormCreateMembershipDistributor({
   countries,
@@ -16,6 +17,8 @@ function FormCreateMembershipDistributor({
   handleChange,
   handleSubmit,
 }) {
+  const { t } = useTranslation();
+
   return (
     <Grid item xs={12} md={6}>
       <Card
@@ -25,12 +28,14 @@ function FormCreateMembershipDistributor({
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormControl fullWidth>
-              <InputLabel id="countryId-label">Country</InputLabel>
+              <InputLabel id="countryId-label">
+                {t("view_membership_distributor_create_country")}
+              </InputLabel>
               <Select
                 labelId="countryId-label"
                 id="countryId"
                 name="countryId"
-                label="Country"
+                label={t("view_membership_distributor_create_country")}
                 value={formData.countryId}
                 onChange={handleChange}
               >
@@ -43,7 +48,9 @@ function FormCreateMembershipDistributor({
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="interval-label">Periodo de Membresía</InputLabel>
+              <InputLabel id="interval-label">
+                {t("view_membership_distributor_create_period")}
+              </InputLabel>
               <Select
                 labelId="interval-label"
                 id="interval"
@@ -58,7 +65,9 @@ function FormCreateMembershipDistributor({
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="type-label">Cuentas</InputLabel>
+              <InputLabel id="type-label">
+                {t("view_membership_distributor_create_accounts")}
+              </InputLabel>
               <Select
                 labelId="type-label"
                 id="type"
@@ -67,17 +76,29 @@ function FormCreateMembershipDistributor({
                 value={formData.type}
                 onChange={handleChange}
               >
-                <MenuItem value={5}>25 Cuentas</MenuItem>
-                <MenuItem value={10}>50 Cuentas</MenuItem>
-                <MenuItem value={20}>100 Cuentas</MenuItem>
-                <MenuItem value={30}>150 Cuentas</MenuItem>
-                <MenuItem value={40}>200 Cuentas</MenuItem>
-                <MenuItem value={50}>500 Cuentas</MenuItem>
+                <MenuItem value={5}>
+                  25 {t("view_membership_distributor_create_accounts")}
+                </MenuItem>
+                <MenuItem value={10}>
+                  50 {t("view_membership_distributor_create_accounts")}
+                </MenuItem>
+                <MenuItem value={20}>
+                  100 {t("view_membership_distributor_create_accounts")}
+                </MenuItem>
+                <MenuItem value={30}>
+                  150 {t("view_membership_distributor_create_accounts")}
+                </MenuItem>
+                <MenuItem value={40}>
+                  200 {t("view_membership_distributor_create_accounts")}
+                </MenuItem>
+                <MenuItem value={50}>
+                  500 {t("view_membership_distributor_create_accounts")}
+                </MenuItem>
               </Select>
             </FormControl>
 
             <TextField
-              label="Nombre"
+              label={t("view_membership_distributor_create_name")}
               id="name"
               name="name"
               fullWidth
@@ -86,7 +107,7 @@ function FormCreateMembershipDistributor({
             />
 
             <TextField
-              label="Amount"
+              label={t("view_membership_distributor_create_amount")}
               id="amount"
               name="amount"
               fullWidth
@@ -96,12 +117,14 @@ function FormCreateMembershipDistributor({
             />
 
             <FormControl fullWidth>
-              <InputLabel id="currency-label">Currency</InputLabel>
+              <InputLabel id="currency-label">
+                {t("view_membership_distributor_create_currency")}
+              </InputLabel>
               <Select
                 labelId="currency-label"
                 id="currency"
                 name="currency"
-                label="Currency"
+                label={t("view_membership_distributor_create_currency")}
                 value={formData.currency}
                 onChange={handleChange}
               >
@@ -111,7 +134,7 @@ function FormCreateMembershipDistributor({
             </FormControl>
 
             <Button type="submit" variant="contained" fullWidth>
-              Crear Membresía
+              {t("view_membership_distributor_create_btn")}
             </Button>
           </form>
         </CardContent>

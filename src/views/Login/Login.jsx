@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import api from "../../api/api";
 import ReCaptcha from "react-google-recaptcha";
@@ -18,6 +18,7 @@ function Login() {
   });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('en'); // Default to English
   const captcha = useRef(null);
 
   const [codeSendend, setcodeSendend] = useState(false);
@@ -27,6 +28,21 @@ function Login() {
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  // Detectar idioma del navegador
+  useEffect(() => {
+    const userLanguages = navigator.languages;
+    const supportedLanguages = ["es", "en", "pt"];
+
+    const foundLanguage = userLanguages.find((language) =>
+      supportedLanguages.includes(language.split("-")[0])
+    );
+
+    if (foundLanguage) {
+      setSelectedLanguage(foundLanguage.split("-")[0]);
+    }
+  }, []);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -44,23 +60,22 @@ function Login() {
     dispatch({ type: "auth/clearError" }); // Limpiar el error al cambiar el formulario
 
     if (!captcha.current.getValue()) {
-      setError("* - Please, check the captcha");
+      setError(translations[selectedLanguage].captchaError);
       return;
     }
 
     if (!validateEmail(formData.email)) {
-      setError("* - Please, enter a valid email");
+      setError(translations[selectedLanguage].invalidEmail);
       return;
     }
 
     if (formData.password.length < 8) {
-      setError("* - Please, enter a valid password (min 8 characters)");
+      setError(translations[selectedLanguage].invalidPassword);
       return;
     }
 
     // Agregar lógica para manejar el envsío del código por correo electrónico
     if (formData.code) {
-      // Aquí puedes implementar el envío del código por correo electrónico
       console.log(`Código enviado a ${formData.email}: ${formData.code}`);
     }
 
@@ -72,7 +87,6 @@ function Login() {
           }
         })
         .catch((error) => {
-          // Manejar errores de inicio de sesión
           console.log(error);
           console.log("test");
         });
@@ -83,13 +97,12 @@ function Login() {
       } else if (Array.isArray(error.response.data.message)) {
         setError(`* - ${error.response.data.message[0]}`);
       } else {
-        setError("* - Something went wrong!");
+        setError(translations[selectedLanguage].somethingWentWrong);
       }
     }
   };
 
   const validateEmail = (email) => {
-    // Validación de correo electrónico utilizando una expresión regular
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -100,9 +113,8 @@ function Login() {
 
   const handleSendCode = async () => {
     try {
-      // Puedes utilizar la misma lógica que usas para el envío del código en handleSubmit
       if (!validateEmail(formData.email)) {
-        setError("* - Please, enter a valid email");
+        setError(translations[selectedLanguage].invalidEmail);
         return;
       }
 
@@ -118,6 +130,63 @@ function Login() {
       setError("* - " + error.response.data.message);
     }
   };
+
+  const translations = {
+    en: {
+      login: "Log in",
+      signIn: "Sign in as an Admin",
+      email: "Email",
+      password: "Password",
+      adminCode: "Admin Code",
+      submit: "Log in",
+      sendCode: "Send Code",
+      loading: "Loading...",
+      completeFields: "Please complete all fields.",
+      invalidEmail: "Please, enter a valid email",
+      invalidPassword: "Please, enter a valid password (min 8 characters)",
+      captchaError: "Please, check the captcha",
+      somethingWentWrong: "Something went wrong!",
+      start: "Let's get started!",
+      codeSent: "Code sent to",
+    },
+    es: {
+      login: "Iniciar sesión",
+      signIn: "Iniciar sesión como Administrador",
+      email: "Correo electrónico",
+      password: "Contraseña",
+      adminCode: "Código del Administrador",
+      submit: "Iniciar sesión",
+      sendCode: "Enviar Código",
+      loading: "Cargando...",
+      completeFields: "Por favor, complete todos los campos.",
+      invalidEmail: "Por favor, introduce un correo electrónico válido",
+      invalidPassword: "Por favor, introduce una contraseña válida (mín 8 caracteres)",
+      captchaError: "Por favor, verifica el captcha",
+      somethingWentWrong: "¡Algo salió mal!",
+      start: "¡Empecemos!",
+      codeSent: "Código enviado a",
+    },
+    pt: {
+      login: "Entrar",
+      signIn: "Entrar como Administrador",
+      email: "E-mail",
+      password: "Senha",
+      adminCode: "Código do Administrador",
+      submit: "Entrar",
+      sendCode: "Enviar Código",
+      loading: "Carregando...",
+      completeFields: "Por favor, preencha todos os campos.",
+      invalidEmail: "Por favor, insira um e-mail válido",
+      invalidPassword: "Por favor, insira uma senha válida (mín 8 caracteres)",
+      captchaError: "Por favor, verifique o captcha",
+      somethingWentWrong: "Algo deu errado!",
+      start: "Vamos começar!",
+      codeSent: "Código enviado para",
+    }
+  };
+
+  const currentTranslations = translations[selectedLanguage];
+
   return (
     <main className="flex h-screen">
       <div className="w-full lg:w-2/6 flex flex-col items-center justify-center bg-[#555CB3] shadow-[0_0px_20px_10px_rgba(0,0,0,0.6)] z-10">
@@ -131,14 +200,14 @@ function Login() {
               PSROCKOLA
             </h2>
           </div>
-          <p className="text-white font-bold text-lg my-4">¡Empecemos!</p>
+          <p className="text-white font-bold text-lg my-4">{currentTranslations.start}</p>
           <form className="mt-6" onSubmit={handleSubmit}>
             <div className="mb-6">
               <TextField
                 id="email"
                 name="email"
                 type="email"
-                label="Email"
+                label={currentTranslations.email}
                 variant="outlined"
                 onChange={handleInputChange}
                 fullWidth
@@ -173,7 +242,7 @@ function Login() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 onChange={handleInputChange}
-                label="Contraseña"
+                label={currentTranslations.password}
                 variant="outlined"
                 fullWidth
                 size="small"
@@ -216,7 +285,7 @@ function Login() {
               <TextField
                 id="adminCode"
                 name="adminCode"
-                label="Código del Administrador"
+                label={currentTranslations.adminCode}
                 variant="outlined"
                 onChange={handleInputChange}
                 fullWidth
@@ -267,7 +336,7 @@ function Login() {
                   },
                 }}
               >
-                INICIAR
+                {currentTranslations.submit}
               </Button>
               <Button
                 type="button"
@@ -283,7 +352,7 @@ function Login() {
                   },
                 }}
               >
-                Enviar Código
+                {currentTranslations.sendCode}
               </Button>
             </div>
             {auth.status === "failed" && (

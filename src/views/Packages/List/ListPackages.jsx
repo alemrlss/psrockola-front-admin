@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import api from "../../../api/api";
+import { useTranslation } from "react-i18next";
 
 function ListPackages() {
   const [packages, setPackages] = useState([]);
@@ -24,6 +25,8 @@ function ListPackages() {
   const [editedPackage, setEditedPackage] = useState(null);
   const [countries, setCountries] = useState([]); // Estado para manejar los países
   const [selectedCountry, setSelectedCountry] = useState(""); // Estado para manejar el país seleccionado
+
+  const { t } = useTranslation();
 
   // Función para cargar los países
   useEffect(() => {
@@ -117,7 +120,7 @@ function ListPackages() {
   return (
     <Box mt={4} bgcolor="background.paper">
       <Typography variant="h4" gutterBottom>
-        Packages Available
+        {t("view_package_list_title")}
       </Typography>
 
       {/* Barra de pestañas */}
@@ -125,19 +128,21 @@ function ListPackages() {
         value={currentTab}
         onChange={(e, newValue) => setCurrentTab(newValue)}
       >
-        <Tab label="Companies" />
-        <Tab label="Distributors" />
+        <Tab label={t("view_packages_create_companies")} />
+        <Tab label={t("view_packages_create_distributors")} />
       </Tabs>
 
       {/* Selector de país */}
       {(currentTab === 0 || currentTab === 1) && (
         <FormControl fullWidth margin="normal">
-          <InputLabel id="country-label">Country</InputLabel>
+          <InputLabel id="country-label">
+            {t("view_packages_create_country")}
+          </InputLabel>
           <Select
             labelId="country-label"
             id="country"
             name="country"
-            label="Country"
+            label={t("view_packages_create_country")}
             onChange={(e) => setSelectedCountry(e.target.value)}
             value={selectedCountry}
             required
@@ -171,11 +176,11 @@ function ListPackages() {
             </Typography>
 
             <Typography variant="body1" sx={{ mb: 1 }}>
-              Amount: {pkg.rockobitsAmount} RB
+              {t("view_packages_create_amount")}: {pkg.rockobitsAmount}
             </Typography>
 
             <Typography variant="body1" sx={{ mb: 2 }}>
-              Price: {pkg.price / 100} USD
+              {t("view_packages_create_price")}: {pkg.price / 100} USD
             </Typography>
 
             <Box sx={{ display: "flex", gap: 1 }}>
@@ -185,7 +190,7 @@ function ListPackages() {
                 onClick={() => openEditModal(pkg)}
                 sx={{ fontWeight: "bold" }}
               >
-                Edit
+                {t("view_package_list_edit")}
               </Button>
               <Button
                 variant="outlined"
@@ -193,7 +198,7 @@ function ListPackages() {
                 onClick={() => openDeleteModal(pkg)}
                 sx={{ fontWeight: "bold" }}
               >
-                Delete
+                {t("view_package_list_delete")}
               </Button>
             </Box>
           </ListItem>
@@ -216,17 +221,17 @@ function ListPackages() {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Edit Package
+            {t("view_package_list_edit_package")}
           </Typography>
           <TextField
-            label="Name"
+            label={t("view_packages_create_name")}
             value={editedPackage ? editedPackage.name : ""}
             onChange={(e) => handlePackageFieldChange("name", e.target.value)}
             fullWidth
             margin="normal"
           />
           <TextField
-            label="Amount (RB)"
+            label={t("view_packages_create_amount")}
             value={editedPackage ? editedPackage.rockobitsAmount : ""}
             onChange={(e) =>
               handlePackageFieldChange(
@@ -238,7 +243,7 @@ function ListPackages() {
             margin="normal"
           />
           <TextField
-            label="Price (USD)"
+            label={t("view_packages_create_price")}
             value={editedPackage ? editedPackage.price / 100 : ""}
             onChange={(e) =>
               handlePackageFieldChange("price", e.target.value * 100)
@@ -247,7 +252,7 @@ function ListPackages() {
             margin="normal"
           />
           <Button variant="contained" onClick={saveChanges}>
-            Save Changes
+            {t("view_package_list_edit_save")}
           </Button>
         </Box>
       </Modal>
@@ -268,16 +273,17 @@ function ListPackages() {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Delete Package
+            {t("view_package_list_title_modal")}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            Are you sure you want to delete this package?
+            {t("view_package_list_message")}
           </Typography>
           <Button variant="contained" onClick={saveChangesDelete}>
-            Delete
+            {t("view_package_list_title_modal_delete")}
           </Button>
           <Button variant="contained" onClick={closeDeleteModal}>
-            Cancel
+          {t("view_package_list_title_modal_cancel")}
+
           </Button>
         </Box>
       </Modal>

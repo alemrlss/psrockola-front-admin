@@ -108,7 +108,7 @@ function CreateMembershipDistributor() {
     <Box>
       <div className="flex items-center space-x-2 py-4">
         <h2 className="text-2xl font-semibold">
-          Crear Membresia para distribuidores
+          {t("view_membership_distributor_create_title")}
         </h2>
         <p className="text-red-500">{error}</p>
         <p className="text-green-600 font-bold">{success}</p>

@@ -8,6 +8,7 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function ModalEditMembershipDistributor({
   isModalOpen,
@@ -16,17 +17,18 @@ function ModalEditMembershipDistributor({
   setSelectedMembership,
   handleSaveChanges,
 }) {
+  const { t } = useTranslation();
   return (
     <Dialog open={isModalOpen} onClose={handleCloseModal} sx={{ my: 4 }}>
       <Box>
-        <DialogTitle>Edit Membership</DialogTitle>
+        <DialogTitle>{t("view_membership_modaledit_title")}</DialogTitle>
       </Box>
       <DialogContent>
         {selectedMembership && (
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="Name"
+                label={t("view_membership_modaledit_name")}
                 value={selectedMembership.name}
                 onChange={(e) =>
                   setSelectedMembership({
@@ -39,8 +41,8 @@ function ModalEditMembershipDistributor({
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="Price"
-                value={selectedMembership.amount/100}
+                label={t("view_membership_modaledit_price")}
+                value={selectedMembership.amount / 100}
                 onChange={(e) =>
                   setSelectedMembership({
                     ...selectedMembership,
@@ -55,10 +57,10 @@ function ModalEditMembershipDistributor({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseModal} color="primary">
-          Cancel
+          {t("view_membership_modaledit_cancel")}
         </Button>
         <Button onClick={handleSaveChanges} color="primary" variant="contained">
-          Save Changes
+          {t("view_membership_modaledit_save")}
         </Button>
       </DialogActions>
     </Dialog>

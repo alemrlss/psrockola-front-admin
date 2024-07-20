@@ -1,8 +1,10 @@
 import { Grid, Button, Typography, Box } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import getBenefitsMembership from "../../../../utils/getBenefitsMembershipDistributor";
+import { useTranslation } from "react-i18next";
 
 function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
+  const { t } = useTranslation();
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Box border="2px solid #555CB3" p={3} m={2} borderRadius={1}>
@@ -10,13 +12,15 @@ function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
           {membership.name}
         </Typography>
         <Typography variant="body1" color="textSecondary" gutterBottom>
-          Precio: {membership.amount / 100} {membership.currency}
+          {t("view_membership_edit_card_price")}: {membership.amount / 100}{" "}
+          {membership.currency}
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
-          Tipo: <b>{membership.type}</b>
+          {t("view_membership_edit_card_type")}: <b>{membership.type}</b>
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
-          <b> Cuentas:</b> {getBenefitsMembership(membership.type).accounts}
+          <b> {t("view_membership_edit_card_accounts")}:</b>{" "}
+          {getBenefitsMembership(membership.type).accounts}
         </Typography>
         <Box
           sx={{
@@ -40,7 +44,7 @@ function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
               marginBottom: 1,
             }}
           >
-            Editar
+            {t("view_membership_edit_btn")}
           </Button>
           <Button
             variant="contained"
@@ -56,7 +60,7 @@ function MembershipCardDistributor({ membership, onEditClick, onDeleteClick }) {
               },
             }}
           >
-            Eliminar
+            {t("view_membership_delete_btn")}
           </Button>
         </Box>
       </Box>

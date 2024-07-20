@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import api from "../../../api/api";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function State() {
   const token = useSelector((state) => state.auth.token);
@@ -36,6 +37,8 @@ function State() {
   const [editingState, setEditingState] = useState(null);
   const [toggleModalOpen, setToggleModalOpen] = useState(false);
   const [togglingState, setTogglingState] = useState(null);
+
+  const { t } = useTranslation();
 
   // Agregado para búsqueda
   const [searchTerm, setSearchTerm] = useState("");
@@ -215,7 +218,7 @@ function State() {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">States:</h2>
+      <h2 className="text-2xl font-bold mb-4">{t("view_states_title")}:</h2>
 
       <FormControl
         variant="outlined"
@@ -224,7 +227,9 @@ function State() {
           marginBottom: 4,
         }}
       >
-        <InputLabel id="country-select-label">Select Country</InputLabel>
+        <InputLabel id="country-select-label">
+          {t("view_states_select")}
+        </InputLabel>
         <Select
           labelId="country-select-label"
           id="country-select"
@@ -234,7 +239,7 @@ function State() {
           sx={{ backgroundColor: "#fff" }}
         >
           <MenuItem value="">
-            <em>None</em>
+            <em>{t("view_states_none")}</em>
           </MenuItem>
           {countries.map((country) => (
             <MenuItem key={country.id} value={country.id}>
@@ -247,7 +252,7 @@ function State() {
       {selectedCountry && (
         <div className="flex flex-wrap">
           <TextField
-            label="Search by Name"
+            label={t("view_states_search")}
             variant="outlined"
             fullWidth
             value={searchTerm}
@@ -261,14 +266,16 @@ function State() {
             <Table>
               <TableHead>
                 <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-                  <TableCell>Nombre</TableCell>
-                  <TableCell>Acciones</TableCell>
+                  <TableCell>{t("view_states_name")}</TableCell>
+                  <TableCell>{t("view_states_actions")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {states.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={3}>No states found.</TableCell>
+                    <TableCell colSpan={3}>
+                      {t("view_states_no_states")}.
+                    </TableCell>
                   </TableRow>
                 )}
                 {states.map((state) => (
@@ -283,14 +290,16 @@ function State() {
                         color="primary"
                         onClick={() => handleEditClick(state)}
                       >
-                        Edit
+                        {t("view_states_edit")}
                       </Button>
                       <Button
                         variant="contained"
                         color="secondary"
                         onClick={() => handleToggleClick(state)}
                       >
-                        {state.active === 1 ? "Desactivar" : "Activar"}
+                        {state.active === 1
+                          ? t("view_states_deactivate")
+                          : t("view_states_activate")}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -331,10 +340,10 @@ function State() {
           }}
         >
           <h2 id="edit-modal-title" className="text-2xl mb-2">
-            Edit State
+            {t("view_states_edit_state")}
           </h2>
           <TextField
-            label="State Name"
+            label={t("view_states_edit_state_name")}
             variant="outlined"
             fullWidth
             name="name"
@@ -352,7 +361,7 @@ function State() {
             onClick={handleEditState}
             className="mt-2"
           >
-            Save Changes
+            {t("view_states_edit_save")}
           </Button>
         </Box>
       </Modal>
@@ -377,37 +386,44 @@ function State() {
           }}
         >
           <h2 id="toggle-modal-title">
-            {togglingState?.active === 1 ? "Desactivar" : "Activar"} Estado
+            {togglingState?.active === 1
+              ? t("view_states_deactivate")
+              : t("view_states_activate")}{" "}
+            {t("view_states_state")}
           </h2>
           <p id="toggle-modal-description">
-            ¿Estás seguro de que deseas{" "}
-            {togglingState?.active === 1 ? "desactivar" : "activar"} el estado{" "}
-            {togglingState?.name}?
+            {t("view_states_delete_part1")}
+            {togglingState?.active === 1
+              ? t("view_states_deactivate")
+              : t("view_states_activate")}
+            {t("view_states_delete_part2")} {togglingState?.name}?
           </p>
           <Button
             variant="contained"
             color="primary"
             onClick={handleToggleState}
           >
-            Confirmar
+            {t("view_states_confirm")}
           </Button>
           <Button
             variant="contained"
             color="secondary"
             onClick={handleToggleModalClose}
           >
-            Cancelar
+            {t("view_states_cancel")}
           </Button>
         </Box>
       </Modal>
 
       {selectedCountry && (
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Create State:</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            {t("view_states_modal_title")}
+          </h2>
           <form onSubmit={handleCreateState}>
             <div className="mb-4">
               <TextField
-                label="State Name"
+                label={t("view_states_edit_state_name")}
                 variant="outlined"
                 fullWidth
                 name="name"
@@ -421,7 +437,7 @@ function State() {
               type="submit"
               disabled={!newState.name}
             >
-              Create State
+              {t("view_states_modal_title")}
             </Button>
           </form>
         </div>

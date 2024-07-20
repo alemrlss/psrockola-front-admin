@@ -11,6 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import api from "../../api/api";
+import { useTranslation } from "react-i18next";
 
 function Packages() {
   const [name, setName] = useState("");
@@ -21,6 +22,8 @@ function Packages() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState(""); // Estado para el mensaje de éxito
   const [countries, setCountries] = useState([]);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -83,7 +86,7 @@ function Packages() {
         <form onSubmit={handleSubmit}>
           <TextField
             id="name"
-            label="Name Package"
+            label={t("view_packages_create_name")}
             fullWidth
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -92,7 +95,7 @@ function Packages() {
           />
           <TextField
             id="amount"
-            label="Amount (RB)"
+            label={t("view_packages_create_amount")}
             type="number"
             fullWidth
             value={amount}
@@ -102,7 +105,7 @@ function Packages() {
           />
           <TextField
             id="price"
-            label="Price (USD)"
+            label={t("view_packages_create_price")}
             type="number"
             fullWidth
             value={price}
@@ -111,24 +114,32 @@ function Packages() {
             margin="normal"
           />
           <FormControl fullWidth margin="normal">
-            <InputLabel id="type-label">Type</InputLabel>
+            <InputLabel id="type-label">
+              {t("view_packages_create_type")}
+            </InputLabel>
             <Select
               labelId="type-label"
               id="type"
               name="type"
-              label="Type"
+              label={t("view_packages_create_type")}
               onChange={(e) => setType(e.target.value)}
               value={type}
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>{t("view_packages_create_none")}</em>
               </MenuItem>
-              <MenuItem value="companies">Companies</MenuItem>
-              <MenuItem value="distributors">Distributors</MenuItem>
+              <MenuItem value="companies">
+                {t("view_packages_create_companies")}
+              </MenuItem>
+              <MenuItem value="distributors">
+                {t("view_packages_create_distributors")}
+              </MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth margin="normal">
-            <InputLabel id="country-label">Country</InputLabel>
+            <InputLabel id="country-label">
+              {t("view_packages_create_country")}
+            </InputLabel>
             <Select
               labelId="country-label"
               id="country"
@@ -177,7 +188,7 @@ function Packages() {
               "&:hover": { backgroundColor: "#555CB3" },
             }}
           >
-            Crear Package
+            {t("view_packages_create_country")}
           </Button>
         </form>
       </Box>

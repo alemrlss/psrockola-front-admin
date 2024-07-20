@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import api from "../../../api/api";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function NestedSelects() {
   const token = useSelector((state) => state.auth.token);
@@ -33,6 +34,8 @@ function NestedSelects() {
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -175,20 +178,22 @@ function NestedSelects() {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Cities</h2>
+      <h2 className="text-2xl font-bold mb-4">{t("view_city_title")}</h2>
 
       <FormControl fullWidth sx={{ marginBottom: 4 }}>
-        <InputLabel id="country-select-label">Select Country</InputLabel>
+        <InputLabel id="country-select-label">
+          {t("view_city_select")}
+        </InputLabel>
         <Select
           labelId="country-select-label"
           id="country-select"
           value={selectedCountry}
           onChange={handleCountryChange}
-          label="Select Country"
+          label={t("view_city_select")}
           sx={{ backgroundColor: "#fff" }}
         >
           <MenuItem value="">
-            <em>None</em>
+            <em>{t("view_city_none")}</em>
           </MenuItem>
           {countries.map((country) => (
             <MenuItem key={country.id} value={country.id}>
@@ -200,17 +205,19 @@ function NestedSelects() {
 
       {selectedCountry && (
         <FormControl fullWidth sx={{ marginBottom: 4 }}>
-          <InputLabel id="state-select-label">Select State</InputLabel>
+          <InputLabel id="state-select-label">
+            {t("view_city_select_2")}
+          </InputLabel>
           <Select
             labelId="state-select-label"
             id="state-select"
             value={selectedState}
             onChange={handleStateChange}
-            label="Select State"
+            label={t("view_city_select_2")}
             sx={{ backgroundColor: "#fff" }}
           >
             <MenuItem value="">
-              <em>None</em>
+              <em>{t("view_city_none")}</em>
             </MenuItem>
             {states.map((state) => (
               <MenuItem key={state.id} value={state.id}>
@@ -220,14 +227,13 @@ function NestedSelects() {
           </Select>
         </FormControl>
       )}
-
       {selectedState && (
         <div>
-          <h2 className="text-2xl font-bold mb-4">Cities:</h2>
+          <h2 className="text-2xl font-bold mb-4">{t("view_city_title")}:</h2>
 
           <div className="mb-4">
             <TextField
-              label="Search by Name"
+              label={t("view_city_search")}
               variant="outlined"
               fullWidth
               value={searchTerm}
@@ -247,8 +253,8 @@ function NestedSelects() {
                     backgroundColor: "#f5f5f5",
                   }}
                 >
-                  <TableCell>Nombre</TableCell>
-                  <TableCell>Acciones</TableCell>
+                  <TableCell>{t("view_city_name")}</TableCell>
+                  <TableCell>{t("view_city_actions")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -260,10 +266,12 @@ function NestedSelects() {
                     <TableCell>{city.name}</TableCell>
                     <TableCell>
                       <Button variant="contained" color="primary">
-                        Edit
+                        {t("view_city_edit")}
                       </Button>
                       <Button variant="contained" color="secondary">
-                        {city.active === 1 ? "Desactivar" : "Activar"}
+                        {city.active === 1
+                          ? t("view_city_deactivate")
+                          : t("view_city_activate")}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -284,10 +292,12 @@ function NestedSelects() {
           />
 
           <div className="mt-4">
-            <h2 className="text-2xl font-bold mb-2">Create New City:</h2>
+            <h2 className="text-2xl font-bold mb-2">
+              {t("view_city_create_new")}
+            </h2>
             <div className="flex">
               <TextField
-                label="City Name"
+                label={t("view_city_name_1")}
                 variant="outlined"
                 value={newCityName}
                 onChange={(e) => setNewCityName(e.target.value)}
@@ -298,7 +308,7 @@ function NestedSelects() {
                 onClick={handleCreateCity}
                 sx={{ marginLeft: 2 }}
               >
-                Create City
+                {t("view_city_create")}
               </Button>
             </div>
           </div>

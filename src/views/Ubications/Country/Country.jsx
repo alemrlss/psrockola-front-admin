@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,8 +16,10 @@ import {
 } from "@mui/material";
 import api from "../../../api/api";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function Country() {
+  const { t } = useTranslation();
   const token = useSelector((state) => state.auth.token);
   const [countries, setCountries] = useState([]);
   const [newCountry, setNewCountry] = useState({
@@ -188,7 +190,9 @@ function Country() {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Countries:</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        {t("view_ubications_countries_title")}:
+      </h2>
       <TextField
         label="Buscar por nombre"
         value={searchQuery}
@@ -202,11 +206,17 @@ function Country() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ISO Code</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Phone Code</TableCell>
-              <TableCell>Activo</TableCell>
-              <TableCell>Acciones</TableCell>
+              <TableCell>{t("view_ubications_countries_table_iso")}</TableCell>
+              <TableCell>{t("view_ubications_countries_table_name")}</TableCell>
+              <TableCell>
+                {t("view_ubications_countries_table_phoneCode")}
+              </TableCell>
+              <TableCell>
+                {t("view_ubications_countries_table_active")}
+              </TableCell>
+              <TableCell>
+                {t("view_ubications_countries_table_actions")}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -218,7 +228,11 @@ function Country() {
                 <TableCell>{country.isoCode}</TableCell>
                 <TableCell>{country.name}</TableCell>
                 <TableCell>{country.phoneCode}</TableCell>
-                <TableCell>{country.active === 1 ? "Si" : "No"}</TableCell>
+                <TableCell>
+                  {country.active === 1
+                    ? t("view_ubications_countries_active_yes")
+                    : t("view_ubications_countries_active_no")}
+                </TableCell>
                 <TableCell>
                   <Button onClick={() => handleOpenEditModal(country)}>
                     Editar
@@ -245,11 +259,13 @@ function Country() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Crear Country:</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          {t("view_ubications_countries_create")}
+        </h2>
         <div className="max-w-md">
           <form onSubmit={handleSubmit}>
             <TextField
-              label="ISO Code"
+              label={t("view_ubications_countries_table_iso")}
               name="isoCode"
               value={newCountry.isoCode}
               onChange={handleChange}
@@ -258,7 +274,7 @@ function Country() {
               margin="normal"
             />
             <TextField
-              label="Phone Code"
+              label={t("view_ubications_countries_table_phoneCode")}
               name="phoneCode"
               value={newCountry.phoneCode}
               onChange={handleChange}
@@ -267,7 +283,7 @@ function Country() {
               margin="normal"
             />
             <TextField
-              label="Name"
+              label={t("view_ubications_countries_table_name")}
               name="name"
               value={newCountry.name}
               onChange={handleChange}
@@ -276,10 +292,10 @@ function Country() {
               margin="normal"
             />
             <Button type="submit" variant="contained" color="primary">
-              Crear
+              {t("view_ubications_countries_create_btn")}
             </Button>
           </form>
-          {loading && <p>Creando país...</p>}
+          {loading && <p>{t("view_ubications_countries_create_btn_loader")}</p>}
           {error && <p>{error}</p>}
           {success && <p>{success}</p>}
         </div>
@@ -298,13 +314,13 @@ function Country() {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Editar País
+            {t("view_ubications_countries_create_btn_edit")}
           </Typography>
           <div>
             {editCountry && (
               <form onSubmit={handleEditSubmit}>
                 <TextField
-                  label="ISO Code"
+                  label={t("view_ubications_countries_table_iso")}
                   name="isoCode"
                   value={editCountry.isoCode}
                   onChange={handleEditChange}
@@ -313,7 +329,7 @@ function Country() {
                   margin="normal"
                 />
                 <TextField
-                  label="Phone Code"
+                  label={t("view_ubications_countries_table_phoneCode")}
                   name="phoneCode"
                   value={editCountry.phoneCode}
                   onChange={handleEditChange}
@@ -322,7 +338,7 @@ function Country() {
                   margin="normal"
                 />
                 <TextField
-                  label="Name"
+                  label={t("view_ubications_countries_table_name")}
                   name="name"
                   value={editCountry.name}
                   onChange={handleEditChange}
@@ -331,7 +347,7 @@ function Country() {
                   margin="normal"
                 />
                 <Button type="submit" variant="contained" color="primary">
-                  Editar
+                  {t("view_ubications_countries_edit")}
                 </Button>
               </form>
             )}
@@ -352,17 +368,17 @@ function Country() {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Desactivar País
+            {t("view_ubications_desactive")}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            ¿Estás seguro de que deseas desactivar este país?
+            {t("view_ubications_message")}
           </Typography>
           <Button
             onClick={handleCloseModalDelete}
             variant="contained"
             color="primary"
           >
-            Cancelar
+            {t("view_ubications_cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -372,7 +388,7 @@ function Country() {
             variant="contained"
             color="secondary"
           >
-            {editCountry.active === 1 ? "Desactivar" : "Activar"}
+            {editCountry.active === 1 ? t("view_ubicactions_deactivate") : t("view_ubications_active")}
           </Button>
         </Box>
       </Modal>
