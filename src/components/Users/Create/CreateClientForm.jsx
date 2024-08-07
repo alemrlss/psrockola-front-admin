@@ -112,7 +112,7 @@ const CreateClientForm = ({ countries, setCountries }) => {
 
     const dataToSend = {
       name: updatedUserObject.name,
-      lastName: updatedUserObject.lastname,
+      lastname: updatedUserObject.lastname,
       address: updatedUserObject.address,
       phone: updatedUserObject.phone,
       postalCode: updatedUserObject.postalCode,
@@ -128,9 +128,8 @@ const CreateClientForm = ({ countries, setCountries }) => {
       language: updatedUserObject.language,
     };
 
-    alert(dataToSend.type);
     try {
-      const response = await api.post("/auth/register", dataToSend);
+      const response = await api.post("/auth/register-client", dataToSend);
       setMessage({ text: "Cliente creado con éxito", type: "success" });
       setUserObject({
         name: "",

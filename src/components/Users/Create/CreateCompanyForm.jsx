@@ -104,7 +104,6 @@ const CreateCompanyForm = ({ countries }) => {
       email: updatedUserObject.email,
       logo: updatedUserObject.logo,
       birthDate: updatedUserObject.birthDate,
-      type: updatedUserObject.type,
       codePhone: updatedUserObject.codePhone,
       cityId: updatedUserObject.cityId,
       countryId: updatedUserObject.countryId,
@@ -114,7 +113,7 @@ const CreateCompanyForm = ({ countries }) => {
 
     console.log(dataToSend);
     try {
-      const response = await api.post("/auth/register", dataToSend);
+      const response = await api.post("/auth/register-company", dataToSend);
       setMessage({ text: "Empresa creada con éxito", type: "success" });
       setUserObject({
         name: "",

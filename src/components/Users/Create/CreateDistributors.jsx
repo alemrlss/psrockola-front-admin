@@ -94,7 +94,7 @@ const CreateDistributorsForm = ({ countries, setCountries }) => {
 
     const dataToSend = {
       name: updatedUserObject.name,
-      lastName: updatedUserObject.lastname,
+      lastname: updatedUserObject.lastname,
       address: updatedUserObject.address,
       phone: updatedUserObject.phone,
       postalCode: updatedUserObject.postalCode,

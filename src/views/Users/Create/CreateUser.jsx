@@ -56,7 +56,7 @@ export default function FullWidthTabs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/country");
+        const response = await api.get("/country/selects");
         setCountries(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
